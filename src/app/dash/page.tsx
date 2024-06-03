@@ -1,5 +1,5 @@
-import { Dashboard } from "@/components/fullwindow/fullwindow";
-import { Sidebar } from "@/components/sidebar/Sidebar";
+import { Dashboard } from "@/components/Dashboard/Dashboard";
+import { Sidebar } from "@/components/Sidebar/Sidebar";
 import React from "react";
 
 export default function page() {

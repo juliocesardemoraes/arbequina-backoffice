@@ -1,11 +1,12 @@
+import { Cadastro } from "@/components/Cadastro/Cadastro";
 import Header from "@/components/Header/Header";
-import { Login } from "@/components/Login/Login";
+import React from "react";
 
-export default function Home() {
+export default function Page() {
   return (
     <main className="flex min-h-screen flex-col items-center ">
       <Header></Header>
-      <Login></Login>
+      <Cadastro></Cadastro>
     </main>
   );
 }
