@@ -1,0 +1,124 @@
+'use client'
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { FieldError, SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
+import { schemaSignin } from "@/schemas/schemaSignin"
+import { useAuth } from "@/contexts/AuthContext"
+import { useEffect, useState } from "react"
+import usePost from "@/hooks/usePost"
+import { toast } from "../ui/use-toast"
+import Loading from "../ui/loading"
+
+interface SigninFormValues {
+  USER_EMAIL?: string;
+  USER_PASSWORD?: string;
+}
+
+export default function SigninForm() {
+  const { login } = useAuth();
+  const form = useForm({
+    mode: 'onBlur',
+    resolver: zodResolver(schemaSignin)
+  })
+
+  const [posted, setPosted] = useState(false);
+  const [data, setData] = useState<SigninFormValues>({ USER_EMAIL: '', USER_PASSWORD: '' });
+
+  const { token, isPosted, isPosting, error, error409 } = usePost<SigninFormValues>(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`, data, posted);
+
+  const submitForm: SubmitHandler<SigninFormValues> = (formData) => {
+    setData(formData)
+    setPosted(true)
+  }
+
+  useEffect(() => {
+    if (error409) {
+      setPosted(false)
+      toast({
+        title: error409.error,
+        description: error409.message
+      })
+    }
+    if (error) {
+      setPosted(false)
+      toast({
+        title: error.error,
+        description: error.message
+      })
+    }
+    if (isPosted) {
+      setPosted(false)
+      const TokenUser = token?.token as string;
+      localStorage.setItem('token', TokenUser)
+      const TokenAdmin = token?.tokenAdmin as string;
+      if (TokenAdmin) {
+        localStorage.setItem('tokenAdmin', TokenAdmin)
+      }
+      login()
+    }
+  }, [error409, error, isPosted]);
+
+  if (isPosting) {
+    return <Loading />;
+  }
+
+  return (
+    <main className="flex h-screen w-screen flex-col items-center justify-center">
+      <Card style={{
+        width: '30rem',
+        maxWidth: '98vw',
+        border: 'none'
+      }}>
+        <CardHeader>
+          <CardTitle className="text-2xl">Entrar</CardTitle>
+          <CardDescription>
+            Digite seu e-mail abaixo para fazer login em sua conta
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(submitForm)} className="space-y-2">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="seu@email.com" type="email" {...field} {...form.register('USER_EMAIL')} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Senha</FormLabel>
+                    <FormControl>
+                      <Input placeholder="sua password" type="password" {...field} {...form.register('USER_PASSWORD')} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className="w-full" type="submit">Entrar</Button>
+            </form>
+          </Form>
+          <div className="mt-4 text-center text-sm">
+            Ainda não tem uma conta?{" "}
+            <Link href="/signup" className="underline">
+              Cadastre-se
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </main>
+  )
+}

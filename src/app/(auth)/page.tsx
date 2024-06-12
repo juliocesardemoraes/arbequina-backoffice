@@ -1,3 +1,5 @@
+import SigninForm from "@/components/signin/SigninForm";
+
 export default function Page() {
-  return <>essa é estrutura base do projeto</>;
+  return <SigninForm />;
 }
