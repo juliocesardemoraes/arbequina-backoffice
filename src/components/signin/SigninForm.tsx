@@ -108,7 +108,9 @@ export default function SigninForm() {
                   </FormItem>
                 )}
               />
-              <Button className="w-full" type="submit">Entrar</Button>
+              <div>
+                <Button className="w-full mt-4" type="submit">Entrar</Button>
+              </div>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
