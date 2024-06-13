@@ -20,7 +20,7 @@ export default function PagesLayout({
   useEffect(() => {
     const token = localStorage.getItem('token');
     setAuthToken(token)
-  }, [])
+  }, [isLoading])
 
   const { data } = useGet(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/me`, {
     headers: {
@@ -28,11 +28,17 @@ export default function PagesLayout({
     }
   }, [authToken]);
 
-  const username = data?.USER_NAME
-  const useremail = data?.USER_EMAIL
-
   if (isLoading) {
-    return <Loading />
+    return (
+      <div style={{
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center'
+      }}>
+        <Loading />
+      </div>
+    )
   }
 
   return (
@@ -149,7 +155,7 @@ export default function PagesLayout({
             </Sheet>
             <div className="w-full flex justify-end" >
               <div className="flex items-center mr-2">
-                Olá, {username}
+                Olá, {data?.USER_NAME}
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -159,7 +165,7 @@ export default function PagesLayout({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>{useremail}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{data?.USER_EMAIL}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logout}>Sair</DropdownMenuItem>
                 </DropdownMenuContent>
