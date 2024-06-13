@@ -3,9 +3,9 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { FieldError, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { schemaSignin } from "@/schemas/schemaSignin"
 import { useAuth } from "@/contexts/AuthContext"
 import { useEffect, useState } from "react"
@@ -53,14 +53,19 @@ export default function SigninForm() {
     if (isPosted) {
       setPosted(false)
       const TokenUser = token?.token as string;
-      localStorage.setItem('token', TokenUser)
       const TokenAdmin = token?.tokenAdmin as string;
-      if (TokenAdmin) {
+      if (!TokenAdmin) {
+        toast({
+          title: 'Acesso negado',
+          description: 'Você não tem autorização para fazer o login'
+        })
+      } else {
+        localStorage.setItem('token', TokenUser)
         localStorage.setItem('tokenAdmin', TokenAdmin)
+        login()
       }
-      login()
     }
-  }, [error409, error, isPosted]);
+  }, [error409, error, isPosted, token]);
 
   if (isPosting) {
     return <Loading />;
