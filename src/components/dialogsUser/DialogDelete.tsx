@@ -59,7 +59,7 @@ export default function DialogDelete({ userId, authToken }: DialogEditNameProps)
 
   if (isDeleted) {
     return (
-      <DialogContent onCloseAutoFocus={() => { window.location.reload() }} className="w-[28rem] max-w-[90vw]">
+      <DialogContent onCloseAutoFocus={() => { window.location.href = '/painel' }} className="w-[28rem] max-w-[90vw]">
         <DialogHeader>
           <div className="flex justify-center p-4">
             <CircleCheck size={60} color="#15ba12" />

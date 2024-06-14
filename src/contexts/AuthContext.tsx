@@ -50,6 +50,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       title: 'Bye',
       description: 'We look forward to seeing you soon.'
     });
+    router.push('/');
   };
 
   return (

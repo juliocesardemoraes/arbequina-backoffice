@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext"
 import Loading from "@/components/ui/loading"
 import useGet from "@/hooks/useGet"
 import { useEffect, useState } from "react"
+import ClientDesactived from "@/components/pages/clientDesactived/ClientDesactived"
 
 export default function PagesLayout({
   children,
@@ -28,6 +29,12 @@ export default function PagesLayout({
     }
   }, [authToken]);
 
+  
+  const desactiveRoute = data?.USER_DELETED;
+  if(desactiveRoute === true) {
+    return <ClientDesactived user={data} authToken={authToken} />
+  }
+
   if (isLoading) {
     return (
       <div style={{
@@ -47,7 +54,7 @@ export default function PagesLayout({
         <div className="hidden border-r bg-muted/40 md:block">
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-              <Link href="" className="flex items-center gap-2 font-semibold">
+              <Link href="/painel" className="flex items-center gap-2 font-semibold">
                 <Package2 className="h-6 w-6" />
                 <span className="">Cabana Arbequina</span>
               </Link>
