@@ -1,13 +1,26 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Loading from '@/components/ui/loading';
 import PageConfiguracoes from '@/components/pages/configuracoes/PageConfiguracoes';
+import useGet from '@/hooks/useGet';
 
 export default function PainelPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
+  const [authToken, setAuthToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setAuthToken(token)
+  }, [isLoading])
+
+  const { data } = useGet(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    }
+  }, [authToken]);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -19,5 +32,5 @@ export default function PainelPage() {
     return <Loading />;
   }
 
-  return <PageConfiguracoes />;
+  return <PageConfiguracoes user={data}/>;
 }

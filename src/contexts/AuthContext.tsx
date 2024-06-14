@@ -45,7 +45,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('token');
       localStorage.removeItem('tokenAdmin');
-      localStorage.removeItem('user');
     }
     toast({
       title: 'Bye',

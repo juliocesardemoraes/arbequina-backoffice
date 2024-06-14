@@ -38,7 +38,6 @@ export default function usePost<T>(url: string, data: T, posted: boolean): UsePo
           setIsPosted(true);
         })
         .catch((err: AxiosError<ErrorResponse>) => {
-          console.log(err)
           if (err.response?.status === 409) {
             setError409(err.response.data);
           } else {
