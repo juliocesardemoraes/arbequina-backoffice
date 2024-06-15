@@ -22,6 +22,7 @@ export default function useGet(url: string, options: UseGetOptions = {}, deps: a
           setData(res.data);
         })
         .catch(err => {
+          console.log(err)
           setError(err);
         })
         .finally(() => {
