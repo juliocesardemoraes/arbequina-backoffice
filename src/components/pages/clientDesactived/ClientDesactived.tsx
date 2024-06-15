@@ -64,7 +64,7 @@ export default function ClientDesactived({ user, authToken }: ClientDesactivedPr
 
   return (
     <div className="h-screen w-full flex flex-col">
-      <header className="flex w-full h-14 items-center gap-4 border-b bg-muted/40 px-4">
+      <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
         <div className="w-full flex justify-end">
           <div className="flex items-center mr-2">
             Olá, {user?.USER_NAME}

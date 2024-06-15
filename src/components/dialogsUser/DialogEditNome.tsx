@@ -42,12 +42,14 @@ export default function DialogEditNome({ userId, authToken }: DialogEditNameProp
 
   useEffect(() => {
     if (error) {
+      setPosted(false)
       toast({
         title: error.error,
         description: error.message
       });
     }
     if (isUpdated) {
+      setPosted(false)
       toast({
         title: "Nome atualizado",
         description: "Seu nome foi atualizado com sucesso."

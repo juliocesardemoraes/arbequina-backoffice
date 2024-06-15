@@ -33,8 +33,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.setItem('isAuthenticated', 'true');
     }
     toast({
-      title: 'Success',
-      description: 'Logged in successfully.'
+      title: 'Sucesso',
+      description: 'Logado com sucesso.'
     });
     router.push('/painel');
   };
@@ -47,8 +47,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.removeItem('tokenAdmin');
     }
     toast({
-      title: 'Bye',
-      description: 'We look forward to seeing you soon.'
+      title: 'Até logo!!',
+      description: 'Esperamos te ver por aqui em breve'
     });
     router.push('/');
   };

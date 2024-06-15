@@ -42,12 +42,14 @@ export default function DialogEditSenha({ userId, authToken }: DialogEditNamePro
 
   useEffect(() => {
     if (error) {
+      setPosted(false)
       toast({
         title: error.error,
         description: error.message
       });
     }
     if (isUpdated) {
+      setPosted(false)
       toast({
         title: "Senha atualizada",
         description: "Sua senha foi atualizada com sucesso."
