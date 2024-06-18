@@ -26,7 +26,6 @@ export default function PainelPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  console.log(categories)
   useEffect(() => {
     const token = localStorage.getItem('token');
     setAuthToken(token);
@@ -83,5 +82,5 @@ export default function PainelPage() {
     return <Loading />;
   }
 
-  return <PageProdutos produtos={products} />;
+  return <PageProdutos produtos={products} categorias={categories} />;
 }

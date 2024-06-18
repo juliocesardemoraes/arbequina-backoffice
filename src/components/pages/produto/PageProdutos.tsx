@@ -1,5 +1,8 @@
+import DialogCreateProduct from "@/components/dialogsProduct/DialogCreateProduct";
+import DialogEditNome from "@/components/dialogsUser/DialogEditNome";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -9,9 +12,10 @@ import { useState } from "react";
 
 interface PageProdutosProps {
   produtos: any;
+  categorias: any;
 }
 
-export default function PageProdutos({ produtos }: PageProdutosProps) {
+export default function PageProdutos({ produtos, categorias }: PageProdutosProps) {
   const [filter, setFilter] = useState('Todos');
 
   const handleFilterChange = (status: string) => {
@@ -101,9 +105,14 @@ export default function PageProdutos({ produtos }: PageProdutosProps) {
                 </DropdownMenu>
                 <Button size="sm" className="h-7 gap-1">
                   <PlusCircle className="h-3.5 w-3.5" />
-                  <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    Novo produto
-                  </span>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                        Novo produto
+                      </span>
+                    </DialogTrigger>
+                    <DialogCreateProduct categorias={categorias} />
+                  </Dialog>
                 </Button>
               </div>
             </div>
