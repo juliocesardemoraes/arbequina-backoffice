@@ -91,8 +91,8 @@ export default function PageClientes({ users }: PageClientesProps) {
             <TabsContent value="clientes">
               <Card x-chunk="dashboard-05-chunk-3" className="flex flex-1 overflow-hidden border-0">
                 <CardContent className="flex flex-1 flex-col p-0">
-                  <Table>
-                    <ScrollArea className="h-[65vh]" >
+                  <ScrollArea className="h-[65vh]" >
+                    <Table>
                       <TableHeader>
                         <TableRow className="bg-muted hover:bg-muted">
                           <TableHead>Nome</TableHead>
@@ -103,8 +103,8 @@ export default function PageClientes({ users }: PageClientesProps) {
                       <TableBody>
                         {rows}
                       </TableBody>
-                    </ScrollArea>
-                  </Table>
+                    </Table>
+                  </ScrollArea>
                 </CardContent>
               </Card>
             </TabsContent>

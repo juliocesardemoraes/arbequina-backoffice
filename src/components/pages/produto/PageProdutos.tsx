@@ -119,8 +119,8 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
             <TabsContent value="all">
               <Card x-chunk="dashboard-06-chunk-0" className="border-0">
                 <CardContent className="flex flex-1 flex-col p-0">
-                  <Table>
-                    <ScrollArea className="h-[65vh] w-full" >
+                  <ScrollArea className="h-[65vh] w-full" >
+                    <Table>
                       <TableHeader>
                         <TableRow className="bg-muted hover:bg-muted">
                           <TableHead>Nome</TableHead>
@@ -135,8 +135,8 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
                       <TableBody>
                         {rows}
                       </TableBody>
-                    </ScrollArea>
-                  </Table>
+                    </Table>
+                  </ScrollArea>
                 </CardContent>
               </Card>
               <div className="mt-2 ml-2">
