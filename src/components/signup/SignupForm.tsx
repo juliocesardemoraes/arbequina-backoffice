@@ -54,12 +54,17 @@ export default function SignupForm() {
     if (isPosted) {
       setPosted(false)
       const TokenUser = token?.token as string;
-      localStorage.setItem('token', TokenUser)
       const TokenAdmin = token?.tokenAdmin as string;
-      if (TokenAdmin) {
+      if (!TokenAdmin) {
+        toast({
+          title: 'Conta criada!!',
+          description: 'Faça o login na area de ligin'
+        })
+      } else {
+        localStorage.setItem('token', TokenUser)
         localStorage.setItem('tokenAdmin', TokenAdmin)
+        login()
       }
-      login()
     }
   }, [error409, error, isPosted]);
 
