@@ -1,11 +1,11 @@
+import DialogDeleteProduct from "@/components/dialogsProduct/DialogDeleteProduct";
 import DialogCreateProduct from "@/components/dialogsProduct/DialogCreateProduct";
-import DialogEditNome from "@/components/dialogsUser/DialogEditNome";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { ListFilter, MoreHorizontal, PlusCircle } from "lucide-react";
 import { useState } from "react";
@@ -17,25 +17,42 @@ interface PageProdutosProps {
 
 export default function PageProdutos({ produtos, categorias }: PageProdutosProps) {
   const [filter, setFilter] = useState('Todos');
+  const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
+  const [editProductId, setEditProductId] = useState<string | null>(null);
 
   const handleFilterChange = (status: string) => {
     setFilter(status);
   };
 
+  const handleOpenDeleteDialog = (productId: string) => {
+    setDeleteProductId(productId);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setDeleteProductId(null);
+  };
+
+  const handleOpenEditDialog = (productId: string) => {
+    setEditProductId(productId);
+  };
+
+  const handleCloseEditDialog = () => {
+    setEditProductId(null);
+  };
+
   const filteredProduct = produtos?.filter((produto: any) => {
     if (filter === 'Todos') return true;
-    if (filter === 'Disponível') return produto.PRODUCT_DELETED === false;
-    if (filter === 'Indisponível') return produto.PRODUCT_DELETED === true;
+    if (filter === 'Disponível') return !produto.PRODUCT_DELETED;
+    if (filter === 'Indisponível') return produto.PRODUCT_DELETED;
   });
 
-
-  const rows = filteredProduct?.map((produto: any, _id: string) => (
-    <TableRow key={_id}>
+  const rows = filteredProduct?.map((produto: any) => (
+    <TableRow key={produto._id}>
       <TableCell className="font-medium">
         <div className="font-medium">{produto.PRODUCT_NAME}</div>
         <div className="hidden text-sm text-muted-foreground md:inline">{produto.PRODUCT_CATEGORY}</div>
       </TableCell>
-      <TableCell className="text-end hidden md:table-cell">{produto.PRODUCT_DELETED ? 'Indisponivel' : 'Disponivel'}</TableCell>
+      <TableCell className="text-end hidden md:table-cell">{produto.PRODUCT_DELETED ? 'Indisponível' : 'Disponível'}</TableCell>
       <TableCell className="text-end hidden md:table-cell">{produto.PRODUCT_PRICE}</TableCell>
       <TableCell className="text-end hidden md:table-cell">{produto.PRODUCT_QUANTITY}</TableCell>
       <TableCell className="text-end">
@@ -51,13 +68,17 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>Editar</DropdownMenuItem>
-            <DropdownMenuItem>Deletar</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleOpenEditDialog(produto._id)}>
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleOpenDeleteDialog(produto._id)}>
+              Deletar
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>
     </TableRow>
-  ))
+  ));
 
   return (
     <>
@@ -65,9 +86,7 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
         <div className="flex items-center">
           <h1 className="text-lg font-semibold md:text-2xl">Produtos</h1>
         </div>
-        <div
-          className="flex flex-1 justify-center rounded-lg border-0 shadow-sm" x-chunk="dashboard-02-chunk-1"
-        >
+        <div className="flex flex-1 justify-center rounded-lg border-0 shadow-sm" x-chunk="dashboard-02-chunk-1">
           <Tabs className="w-full" defaultValue="all">
             <div className="flex items-center">
               <div className="ml-auto flex items-center gap-2">
@@ -103,23 +122,23 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
                     </DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button size="sm" className="h-7 gap-1">
-                  <PlusCircle className="h-3.5 w-3.5" />
-                  <Dialog>
-                    <DialogTrigger asChild>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button size="sm" className="h-7 gap-1">
+                      <PlusCircle className="h-3.5 w-3.5" />
                       <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                         Novo produto
                       </span>
-                    </DialogTrigger>
-                    <DialogCreateProduct categorias={categorias} />
-                  </Dialog>
-                </Button>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogCreateProduct categorias={categorias} />
+                </Dialog>
               </div>
             </div>
             <TabsContent value="all">
               <Card x-chunk="dashboard-06-chunk-0" className="border-0">
                 <CardContent className="flex flex-1 flex-col p-0">
-                  <ScrollArea className="h-[65vh] w-full" >
+                  <ScrollArea className="h-[65vh] w-full">
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-muted hover:bg-muted">
@@ -140,12 +159,21 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
                 </CardContent>
               </Card>
               <div className="mt-2 ml-2">
-                <span className="text-[10px]">OBS: produtos indisponíveis são produtos que foram apagados e que não serão mais vendidos, produtos com o estoque 0 são produtos que ainda fazem parte do catalogo de vendas.</span>
+                <span className="text-[10px]">OBS: Produtos indisponíveis não são apagados do banco porem não fazem mais parte do catálogo, produtos com o estoque 0 são produtos que ainda fazem parte do catálogo de vendas.</span>
               </div>
             </TabsContent>
           </Tabs>
         </div>
       </main>
+      {deleteProductId && (
+        <Dialog open={true} onOpenChange={handleCloseDeleteDialog}>
+          <DialogDeleteProduct productId={deleteProductId} />
+        </Dialog>
+      )}
+      {editProductId && (
+        <Dialog open={true} onOpenChange={handleCloseEditDialog}>
+        </Dialog>
+      )}
     </>
-  )
+  );
 }
