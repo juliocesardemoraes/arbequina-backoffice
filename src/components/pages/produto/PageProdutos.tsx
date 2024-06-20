@@ -18,7 +18,6 @@ interface PageProdutosProps {
 export default function PageProdutos({ produtos, categorias }: PageProdutosProps) {
   const [filter, setFilter] = useState('Todos');
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
-  const [editProductId, setEditProductId] = useState<string | null>(null);
 
   const handleFilterChange = (status: string) => {
     setFilter(status);
@@ -30,14 +29,6 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
 
   const handleCloseDeleteDialog = () => {
     setDeleteProductId(null);
-  };
-
-  const handleOpenEditDialog = (productId: string) => {
-    setEditProductId(productId);
-  };
-
-  const handleCloseEditDialog = () => {
-    setEditProductId(null);
   };
 
   const filteredProduct = produtos?.filter((produto: any) => {
@@ -68,8 +59,8 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleOpenEditDialog(produto._id)}>
-              Editar
+            <DropdownMenuItem>
+              <a href={`/produto/${produto._id}`}>Editar</a>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => handleOpenDeleteDialog(produto._id)}>
               Deletar
@@ -168,10 +159,6 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
       {deleteProductId && (
         <Dialog open={true} onOpenChange={handleCloseDeleteDialog}>
           <DialogDeleteProduct productId={deleteProductId} />
-        </Dialog>
-      )}
-      {editProductId && (
-        <Dialog open={true} onOpenChange={handleCloseEditDialog}>
         </Dialog>
       )}
     </>
