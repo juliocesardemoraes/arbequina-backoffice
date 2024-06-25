@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Loading from '@/components/ui/loading';
-import PageProdutos from '@/components/pages/produto/PageProdutos';
+import PageProdutoId from '@/components/pages/produto/produtoId/PageProdutoId';
 
 interface Product {
   _id: string;
@@ -19,11 +19,11 @@ interface Category {
   CATEGORY_NAME: string;
 }
 
-export default function PainelPage() {
+export default function ProductIdPage({ params }: any) {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const [authToken, setAuthToken] = useState<string | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [product, setProduct] = useState<Product | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -39,10 +39,10 @@ export default function PainelPage() {
 
   useEffect(() => {
     if (authToken) {
-      const fetchProductsAndCategories = async () => {
+      const fetchProductAndCategories = async () => {
         try {
-          const [productsResponse, categoriesResponse] = await Promise.all([
-            fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/product`, {
+          const [productResponse, categoriesResponse] = await Promise.all([
+            fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/product/${params.id}`, {
               headers: {
                 Authorization: `Bearer ${authToken}`
               }
@@ -54,27 +54,22 @@ export default function PainelPage() {
             })
           ]);
 
-          const productsData: Product[] = await productsResponse.json();
+          const productData: Product = await productResponse.json();
           const categoriesData: Category[] = await categoriesResponse.json();
 
-          const categoryMap: { [key: string]: string } = categoriesData.reduce<{ [key: string]: string }>((acc, category) => {
-            acc[category._id] = category.CATEGORY_NAME;
-            return acc;
-          }, {});
+          const category = categoriesData.find(cat => cat._id === productData.PRODUCT_CATEGORY);
+          if (category) {
+            productData.PRODUCT_CATEGORY = category.CATEGORY_NAME;
+          }
 
-          const productsWithCategoryNames = productsData.map(product => ({
-            ...product,
-            PRODUCT_CATEGORY: categoryMap[product.PRODUCT_CATEGORY] || product.PRODUCT_CATEGORY
-          }));
-
-          setProducts(productsWithCategoryNames);
+          setProduct(productData);
           setCategories(categoriesData);
         } catch (error) {
-          console.error('Failed to fetch products and categories:', error);
+          console.error('Failed to fetch product and categories:', error);
         }
       };
 
-      fetchProductsAndCategories();
+      fetchProductAndCategories();
     }
   }, [authToken]);
 
@@ -82,5 +77,5 @@ export default function PainelPage() {
     return <Loading />;
   }
 
-  return <PageProdutos produtos={products} categorias={categories} />;
+  return product ? <PageProdutoId produto={product} categorias={categories} /> : <Loading />;
 }

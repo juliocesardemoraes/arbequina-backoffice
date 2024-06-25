@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link"
-import { CircleUser, Home, Menu, Package, Package2, ShoppingCart, Users, Settings } from "lucide-react"
+import { CircleUser, Home, Menu, Package, Package2, ShoppingCart, Users, Settings, Boxes } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -76,6 +76,13 @@ export default function PagesLayout({
                   Transações
                 </Link>
                 <Link
+                  href="/categorias"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                >
+                  <Boxes className="h-4 w-4" />
+                  Categorias
+                </Link>
+                <Link
                   href="/produtos"
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                 >
@@ -135,6 +142,13 @@ export default function PagesLayout({
                   >
                     <ShoppingCart className="h-5 w-5" />
                     Transações
+                  </Link>
+                  <Link
+                    href="/categorias"
+                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  >
+                    <Boxes className="h-5 w-5" />
+                    Categorias
                   </Link>
                   <Link
                     href="/produtos"

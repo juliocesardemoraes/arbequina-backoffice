@@ -30,13 +30,13 @@ export default function PageClientes({ users }: PageClientesProps) {
   };
 
   const rows = filteredUser?.map((user: any, index: any) => (
-    <TableRow className="w-full flex justify-between" key={index}>
-      <TableCell className="flex-1 flex-row items-center">
+    <TableRow key={index}>
+      <TableCell>
         <div className="font-medium">{user.USER_NAME}</div>
         <div className="hidden text-sm text-muted-foreground md:inline">{user.USER_EMAIL}</div>
       </TableCell>
-      <TableCell className="flex-1 flex items-center justify-end hidden sm:flex mr-6">{formatDate(user.createdAt)}</TableCell>
-      <TableCell className="flex-1 flex items-center justify-end">{user.USER_DELETED ? 'Desativado' : 'Ativo'}</TableCell>
+      <TableCell className="text-end hidden md:table-cell">{formatDate(user.createdAt)}</TableCell>
+      <TableCell className="text-end">{user.USER_DELETED ? 'Desativado' : 'Ativo'}</TableCell>
     </TableRow>
   ));
 
@@ -52,7 +52,7 @@ export default function PageClientes({ users }: PageClientesProps) {
           <Tabs className="w-full" defaultValue="clientes">
             <div className="flex items-center">
               <div className="ml-auto flex items-center gap-2">
-              <DropdownMenu>
+                <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
@@ -91,20 +91,20 @@ export default function PageClientes({ users }: PageClientesProps) {
             <TabsContent value="clientes">
               <Card x-chunk="dashboard-05-chunk-3" className="flex flex-1 overflow-hidden border-0">
                 <CardContent className="flex flex-1 flex-col p-0">
-                  <Table className="flex flex-1 flex-col">
-                    <TableHeader className="flex w-full ">
-                      <TableRow className="w-full flex justify-between bg-muted hover:bg-muted">
-                        <TableHead className="pr-10 flex-1 flex items-center">Nome</TableHead>
-                        <TableHead className="flex-1 flex items-center justify-end hidden sm:flex">Data de criação</TableHead>
-                        <TableHead className="flex-1 flex items-center justify-end">Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <ScrollArea className="h-[65vh]" >
+                  <ScrollArea className="h-[65vh]" >
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-muted hover:bg-muted">
+                          <TableHead>Nome</TableHead>
+                          <TableHead className="text-end hidden md:table-cell">Data de criação</TableHead>
+                          <TableHead className="text-end">Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
                         {rows}
-                      </ScrollArea>
-                    </TableBody>
-                  </Table>
+                      </TableBody>
+                    </Table>
+                  </ScrollArea>
                 </CardContent>
               </Card>
             </TabsContent>
