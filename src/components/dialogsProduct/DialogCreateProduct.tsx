@@ -128,9 +128,11 @@ export default function DialogCreateProduct({ categorias }: any) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {categorias.map((categoria: any) => (
-                        <SelectItem key={categoria._id} value={categoria._id}>{categoria.CATEGORY_NAME}</SelectItem>
-                      ))}
+                      {categorias
+                        .filter((categoria: any) => !categoria.CATEGORY_DELETED)
+                        .map((categoria: any) => (
+                          <SelectItem key={categoria._id} value={categoria._id}>{categoria.CATEGORY_NAME}</SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
