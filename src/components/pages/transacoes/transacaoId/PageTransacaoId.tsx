@@ -52,7 +52,6 @@ function getStatusLabelAndClass(status: string) {
 
 export default function PageTransacaoId({ compra, produtos }: PageCompraIdProps) {
   const router = useRouter();
-  // TODO mostra nome do cliente
 
   return (
     <>
