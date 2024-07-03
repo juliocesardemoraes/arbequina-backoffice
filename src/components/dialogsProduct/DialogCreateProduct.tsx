@@ -111,7 +111,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                   <FormControl>
                     <Input type="text" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -127,7 +127,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="max-h-60 overflow-y-auto">
                       {categorias
                         .filter((categoria: any) => !categoria.CATEGORY_DELETED)
                         .map((categoria: any) => (
@@ -135,7 +135,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                         ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -152,7 +152,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -169,7 +169,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />

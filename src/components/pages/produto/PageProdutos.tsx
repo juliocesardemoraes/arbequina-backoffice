@@ -1,3 +1,4 @@
+'use client';
 import DialogDeleteProduct from "@/components/dialogsProduct/DialogDeleteProduct";
 import DialogCreateProduct from "@/components/dialogsProduct/DialogCreateProduct";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { ListFilter, MoreHorizontal, PlusCircle } from "lucide-react";
 import { useState } from "react";
+import formatPrice from "@/utils/formatPrice";
 
 interface PageProdutosProps {
   produtos: any;
@@ -17,10 +19,16 @@ interface PageProdutosProps {
 
 export default function PageProdutos({ produtos, categorias }: PageProdutosProps) {
   const [filter, setFilter] = useState('Todos');
+  const [selectedCategory, setSelectedCategory] = useState('Todas');
+  const [hideDisabled, setHideDisabled] = useState(false);
   const [deleteProductId, setDeleteProductId] = useState<string | null>(null);
 
   const handleFilterChange = (status: string) => {
     setFilter(status);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
   };
 
   const handleOpenDeleteDialog = (productId: string) => {
@@ -32,21 +40,36 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
   };
 
   const filteredProduct = produtos?.filter((produto: any) => {
-    if (filter === 'Todos') return true;
-    if (filter === 'Disponível') return !produto.PRODUCT_DELETED;
-    if (filter === 'Indisponível') return produto.PRODUCT_DELETED;
+    if (filter !== 'Todos') {
+      if (filter === 'Disponível' && produto.PRODUCT_DELETED) return false;
+      if (filter === 'Indisponível' && !produto.PRODUCT_DELETED) return false;
+    }
+    if (selectedCategory !== 'Todas' && produto.PRODUCT_CATEGORY !== selectedCategory) return false;
+    if (hideDisabled && produto.PRODUCT_DELETED) return false;
+    return true;
   });
 
   const rows = filteredProduct?.map((produto: any) => (
     <TableRow key={produto._id}>
-      <TableCell className="font-medium">
-        <div className="font-medium">{produto.PRODUCT_NAME}</div>
-        <div className="hidden text-sm text-muted-foreground md:inline">{produto.PRODUCT_CATEGORY}</div>
+      <TableCell className="font-medium flex flex-col">
+        <div className="flex items-center">
+          <div className={`w-2.5 h-2.5 rounded-full ${produto.PRODUCT_DELETED ? 'bg-red-500' : 'bg-green-500'} mr-2 md:hidden`} />
+          <span className="text-sm">{produto.PRODUCT_NAME}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-muted-foreground">{produto.PRODUCT_CATEGORY}</div>
+          <span className="text-sm text-muted-foreground md:hidden">{produto.PRODUCT_QUANTITY} Un.</span>
+        </div>
       </TableCell>
-      <TableCell className="text-end hidden md:table-cell">{produto.PRODUCT_DELETED ? 'Indisponível' : 'Disponível'}</TableCell>
-      <TableCell className="text-end hidden md:table-cell">{produto.PRODUCT_PRICE}</TableCell>
-      <TableCell className="text-end hidden md:table-cell">{produto.PRODUCT_QUANTITY}</TableCell>
-      <TableCell className="text-end">
+      <TableCell className="text-end hidden md:table-cell">{formatPrice(produto.PRODUCT_PRICE)}</TableCell>
+      <TableCell className="text-end hidden md:table-cell">{produto.PRODUCT_QUANTITY} Un.</TableCell>
+      <TableCell className="text-end hidden md:table-cell">
+        <div className="flex items-center justify-end">
+          <span className="text-sm mr-3">{produto.PRODUCT_DELETED ? 'Indisponível' : 'Disponível'}</span>
+          <div className={`w-2.5 h-2.5 rounded-full ml-1 ${produto.PRODUCT_DELETED ? 'bg-red-500' : 'bg-green-500'}`} />
+        </div>
+      </TableCell>
+      <TableCell className="text-end pl-0">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -90,8 +113,8 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
                       </span>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
+                  <DropdownMenuContent align="end" className="max-h-80 overflow-y-auto">
+                    <DropdownMenuLabel>Filtrar por status</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuCheckboxItem
                       checked={filter === 'Todos'}
@@ -111,6 +134,23 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
                     >
                       Indisponível
                     </DropdownMenuCheckboxItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel>Filtrar por categoria</DropdownMenuLabel>
+                    <DropdownMenuCheckboxItem
+                      checked={selectedCategory === 'Todas'}
+                      onCheckedChange={() => handleCategoryChange('Todas')}
+                    >
+                      Todas
+                    </DropdownMenuCheckboxItem>
+                    {categorias.map((categoria: any) => (
+                      <DropdownMenuCheckboxItem
+                        key={categoria._id}
+                        checked={selectedCategory === categoria.CATEGORY_NAME}
+                        onCheckedChange={() => handleCategoryChange(categoria.CATEGORY_NAME)}
+                      >
+                        {categoria.CATEGORY_NAME}
+                      </DropdownMenuCheckboxItem>
+                    ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <Dialog>
@@ -129,15 +169,15 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
             <TabsContent value="all">
               <Card x-chunk="dashboard-06-chunk-0" className="border-0">
                 <CardContent className="flex flex-1 flex-col p-0">
-                  <ScrollArea className="h-[65vh] w-full">
+                  <ScrollArea className="h-[63vh] w-full">
                     <Table>
                       <TableHeader>
                         <TableRow className="bg-muted hover:bg-muted">
-                          <TableHead>Nome</TableHead>
-                          <TableHead className="text-end hidden md:table-cell">Status</TableHead>
-                          <TableHead className="text-end hidden md:table-cell">Preço</TableHead>
-                          <TableHead className="text-end hidden md:table-cell">Estoque</TableHead>
-                          <TableHead>
+                          <TableHead className='md:w-[30%]'>Nome</TableHead>
+                          <TableHead className="md:w-[10%] text-end hidden md:table-cell">Preço</TableHead>
+                          <TableHead className="md:w-[10%] text-end hidden md:table-cell">Estoque</TableHead>
+                          <TableHead className="md:w-[10%] text-end hidden md:table-cell">Status</TableHead>
+                          <TableHead className='md:w-[10%]'>
                             <span className="sr-only">Actions</span>
                           </TableHead>
                         </TableRow>

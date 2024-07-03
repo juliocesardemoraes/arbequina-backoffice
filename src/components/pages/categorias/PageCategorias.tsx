@@ -35,9 +35,17 @@ export default function PageCategorias({ categories }: any) {
   const rows = filteredCategory?.map((category: any) => (
     <TableRow key={category._id}>
       <TableCell className="font-medium">
-        <div className="font-medium">{category.CATEGORY_NAME}</div>
+        <div className="flex items-center">
+          <div className={`w-2.5 h-2.5 rounded-full ${category.CATEGORY_DELETED ? 'bg-red-500' : 'bg-green-500'} mr-2 md:hidden`} />
+          <span className="text-sm">{category.CATEGORY_NAME}</span>
+        </div>
       </TableCell>
-      <TableCell className="text-end hidden md:table-cell">{category.CATEGORY_DELETED ? 'Indisponível' : 'Disponível'}</TableCell>
+      <TableCell className="text-end hidden md:table-cell">
+        <div className="flex items-center justify-end">
+          <span className="text-sm mr-3">{category.CATEGORY_DELETED ? 'Indisponível' : 'Disponível'}</span>
+          <div className={`w-2.5 h-2.5 rounded-full ml-1 ${category.CATEGORY_DELETED ? 'bg-red-500' : 'bg-green-500'}`} />
+        </div>
+      </TableCell>
       <TableCell className="text-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

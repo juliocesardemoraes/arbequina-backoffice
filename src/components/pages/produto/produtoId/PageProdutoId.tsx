@@ -5,6 +5,7 @@ import DialogEditProductQuantity from "@/components/dialogsProduct/DialogEditPro
 import DialogEditProductStatus from "@/components/dialogsProduct/DialogEditProductStatus"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
+import formatPrice from "@/utils/formatPrice"
 import { Pen } from "lucide-react"
 import { useEffect, useState } from "react"
 
@@ -66,7 +67,7 @@ export default function PageProdutoId({ produto, categorias }: any) {
                   <DialogEditProductPrice productId={productId} authToken={authToken} />
                 </Dialog>
               </div>
-              <div className="font-medium">{produto.PRODUCT_PRICE}</div>
+              <div className="font-medium">{formatPrice(produto.PRODUCT_PRICE)}</div>
             </div>
             <div className="mb-5 pb-2 border-b">
               <div className="w-full justify-between text-sm flex items-center gap-2 text-muted-foreground md:inline-flex">
