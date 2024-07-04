@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link"
-import { CircleUser, Home, Menu, Package, Package2, ShoppingCart, Users, Settings, Boxes } from "lucide-react"
+import { CircleUser, Menu, Package, Users, Settings, Boxes, LayoutPanelLeft, ArrowLeftRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -9,6 +9,7 @@ import Loading from "@/components/ui/loading"
 import useGet from "@/hooks/useGet"
 import { useEffect, useState } from "react"
 import ClientDesactived from "@/components/pages/clientDesactived/ClientDesactived"
+import Image from "next/image"
 
 export default function PagesLayout({
   children,
@@ -55,7 +56,7 @@ export default function PagesLayout({
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
               <Link href="/painel" className="flex items-center gap-2 font-semibold">
-                <Package2 className="h-6 w-6" />
+              <Image src="/cabana-arbequina-logo.png" className="h-8 w-8" width={50} height={50} alt="cabana-arbequina-logo"/>
                 <span className="">Cabana Arbequina</span>
               </Link>
             </div>
@@ -65,14 +66,14 @@ export default function PagesLayout({
                   href="/painel"
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                 >
-                  <Home className="h-4 w-4" />
+                  <LayoutPanelLeft className="h-4 w-4" />
                   Painel
                 </Link>
                 <Link
                   href="/transacoes"
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
                 >
-                  <ShoppingCart className="h-4 w-4" />
+                  <ArrowLeftRight className="h-4 w-4" />
                   Transações
                 </Link>
                 <Link
@@ -126,21 +127,21 @@ export default function PagesLayout({
                     href=""
                     className="flex items-center gap-2 text-lg font-semibold"
                   >
-                    <Package2 className="h-6 w-6" />
+                    <Image src="/cabana-arbequina-logo.png" className="h-8 w-8" width={50} height={50} alt="cabana-arbequina-logo"/>
                     <span className="">Cabana Arbequina</span>
                   </Link>
                   <Link
                     href="/painel"
                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                   >
-                    <Home className="h-5 w-5" />
+                    <LayoutPanelLeft className="h-5 w-5" />
                     Painel
                   </Link>
                   <Link
                     href="/transacoes"
                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                   >
-                    <ShoppingCart className="h-5 w-5" />
+                    <ArrowLeftRight className="h-5 w-5" />
                     Transações
                   </Link>
                   <Link
@@ -158,14 +159,14 @@ export default function PagesLayout({
                     Produtos
                   </Link>
                   <Link
-                    href="clientes"
+                    href="/clientes"
                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                   >
                     <Users className="h-5 w-5" />
                     Clientes
                   </Link>
                   <Link
-                    href="configuracoes"
+                    href="/configuracoes"
                     className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                   >
                     <Settings className="h-5 w-5" />

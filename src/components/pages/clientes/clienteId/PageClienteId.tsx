@@ -1,19 +1,31 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import formatDate from "@/utils/formatDate";
-import formatPrice from "@/utils/formatPrice";
-import { Activity, DollarSign, ListFilter, MoreHorizontal, PieChart, Users } from "lucide-react";
-import { useState } from "react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import formatDate from '@/utils/formatDate';
+import formatPrice from '@/utils/formatPrice';
+import { ChevronLeft, ListFilter, MoreHorizontal } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+interface User {
+  USER_ADMIN: boolean;
+  USER_EMAIL: string;
+  USER_NAME: string;
+  USER_DELETED: boolean;
+  createdAt: string;
+  updatedAt: string;
+  _id: string;
+}
 
 interface Compra {
   _id: string;
   CART_USER_ID: string;
   CART_PRODUCT: {
     PRODUCT_ID: string;
+    PRODUCT_NAME?: string;
     PRODUCT_QUANTITY: number;
     _id: string;
   }[];
@@ -30,22 +42,13 @@ interface CompraStats {
   canceledCount: number;
   totalCompletedValue: number;
   totalActiveValue: number;
-}
-
-interface UserStats {
-  activeUsers: number;
-  deactivatedUsers: number;
-  totalUsers: number;
-}
-
-interface TransactionStats {
   totalTransactions: number;
-  todayTransactions: number;
 }
 
-interface PagePainelProps {
-  compras: Compra[] | null;
-  stats: CompraStats & UserStats & TransactionStats;
+interface PageClienteIdProps {
+  user: User | null;
+  compras: Compra[];
+  stats: CompraStats;
 }
 
 const statusMap: { [key: string]: { label: string, color: string } } = {
@@ -58,7 +61,8 @@ function getStatusLabelAndClass(status: string) {
   return statusMap[status] || { label: 'Desconhecido', color: 'bg-gray-500' };
 }
 
-export default function PagePainel({ compras, stats }: PagePainelProps) {
+export default function PageClienteId({ user, compras, stats }: PageClienteIdProps) {
+  const router = useRouter();
   const [filter, setFilter] = useState<string>('Todos');
 
   const handleFilterChange = (status: string) => {
@@ -74,8 +78,8 @@ export default function PagePainel({ compras, stats }: PagePainelProps) {
 
   const rows = filteredCompra?.map((compra: Compra) => (
     <TableRow key={compra._id}>
-      <TableCell className="font-medium">
-        <div className="text-sm text-muted-foreground">Ordem #{compra._id}</div>
+      <TableCell className="font-medium flex flex-col">
+        <div className="text-sm text-muted-foreground mb-1">Ordem #{compra._id}</div>
         <div className="flex items-center">
           <div className={`w-2 h-2 rounded-full mr-2 ${getStatusLabelAndClass(compra.CART_STATUS).color} md:hidden`} />
           <span className="text-sm">{formatPrice(compra.CART_PRICE)}</span>
@@ -112,64 +116,54 @@ export default function PagePainel({ compras, stats }: PagePainelProps) {
 
   return (
     <>
-      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-        <div className="flex items-center">
-          <h1 className="text-lg font-semibold md:text-2xl">Painel</h1>
+      <main className="flex flex-col gap-4 p-4 lg:gap-2 lg:p-6 lg:pb-0">
+        <div className="flex items-center  gap-2">
+          <ChevronLeft className="cursor-pointer" onClick={() => router.back()} />
+          <h1 className="text-lg font-semibold md:text-2xl">Detalhes do cliente</h1>
         </div>
-        <div className="flex flex-1 rounded-lg shadow-sm" x-chunk="dashboard-02-chunk-1">
+        <div className="flex flex-1 justify-center rounded-lg border-0 shadow-sm" x-chunk="dashboard-02-chunk-1">
           <div className="grid w-full auto-rows-max items-start gap-6 md:gap-6 lg:col-span-2">
-            <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-2">
               <Card x-chunk="dashboard-01-chunk-0">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Total de vendas
-                  </CardTitle>
-                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium">Informações do cliente</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{formatPrice(stats.totalCompletedValue)}</div>
-                  <div className="text-sm text-muted-foreground">+ {formatPrice(stats.totalActiveValue)} em vendas pendetes</div>
+                  <div className='flex'>
+                    <div className="text-2xl font-bold">{user?.USER_NAME}</div>
+                    <div className="ml-auto flex items-center gap-1">
+                      <div className={`w-2 h-2 rounded-full mx-1 ${user?.USER_DELETED ? 'bg-red-500' : 'bg-green-500'}`} />
+                      <span className="text-xs">{user?.USER_DELETED ? 'Conta desativada' : 'Conta ativa'}</span>
+                    </div>
+                  </div>
+                  <div className="text-sm mt-1">{user?.USER_EMAIL}</div>
+                  <div className="text-sm text-muted-foreground mt-1">Criado em {formatDate(user?.createdAt)}</div>
+                  <div className='border-t-[1px] mt-4 pt-4'>
+                    <div className="text-xs text-muted-foreground">Nivel:</div>
+                    <div className="text-sm text-muted-foreground">{user?.USER_ADMIN ? 'Administrador' : 'Cliente'}</div>
+                  </div>
                 </CardContent>
               </Card>
               <Card x-chunk="dashboard-01-chunk-1">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Resumo de vendas
-                  </CardTitle>
-                  <PieChart className="h-4 w-4 text-muted-foreground" />
+                  <CardTitle className="text-sm font-medium">Resumo do cliente</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-muted-foreground">{stats.completedCount} concluídas</div>
-                  <div className="text-sm text-muted-foreground">{stats.activeCount} pendentes</div>
-                  <div className="text-sm text-muted-foreground">{stats.canceledCount} canceladas</div>
-                </CardContent>
-              </Card>
-              <Card x-chunk="dashboard-01-chunk-2">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Transações</CardTitle>
-                  <Activity className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm text-muted-foreground">{stats.totalTransactions} transações ao total</div>
-                  <div className="text-sm text-muted-foreground">{stats.todayTransactions} hoje</div>
-                </CardContent>
-              </Card>
-              <Card x-chunk="dashboard-01-chunk-3">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Clientes</CardTitle>
-                  <Users className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm text-muted-foreground">{stats.totalUsers} total</div>
-                  <div className="text-sm text-muted-foreground">{stats.activeUsers} ativos</div>
-                  <div className="text-sm text-muted-foreground">{stats.deactivatedUsers} desativados</div>
+                  <div className="text-2xl font-bold">{formatPrice(stats.totalCompletedValue)}<span className="text-sm font-normal text-muted-foreground"> em compras</span></div>
+                  <div className="text-sm text-muted-foreground">+ {formatPrice(stats.totalActiveValue)} em compras pendetes</div>
+                  <div className="text-sm text-muted-foreground">{stats.totalTransactions} compras ao todo</div>
+                  <div className='border-t-[1px] mt-4 pt-4'>
+                    <div className="text-sm text-muted-foreground">{stats.completedCount} Compras concluídas</div>
+                    <div className="text-sm text-muted-foreground">{stats.activeCount} Compras pendentes</div>
+                    <div className="text-sm text-muted-foreground">{stats.canceledCount} Compras canceladas</div>
+                  </div>
                 </CardContent>
               </Card>
             </div>
             <div className="mb-10">
               <Tabs className="w-full" defaultValue="all">
-                <div className="flex items-center">
-                  <h1 className="text-lg font-semibold md:text-2xl">Ultimas Transações</h1>
+                <div className="flex items-center pb-2">
+                  <div className="text-lg font-semibold md:text-2xl">Ultimas compras</div>
                   <div className="ml-auto flex items-center gap-2">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -260,5 +254,5 @@ export default function PagePainel({ compras, stats }: PagePainelProps) {
         </div>
       </main>
     </>
-  )
+  );
 }

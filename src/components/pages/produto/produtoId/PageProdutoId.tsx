@@ -5,10 +5,13 @@ import DialogEditProductQuantity from "@/components/dialogsProduct/DialogEditPro
 import DialogEditProductStatus from "@/components/dialogsProduct/DialogEditProductStatus"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
-import { Pen } from "lucide-react"
+import formatPrice from "@/utils/formatPrice"
+import { ChevronLeft, Pen } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 export default function PageProdutoId({ produto, categorias }: any) {
+  const router = useRouter();
   const productId = produto?._id
   const [authToken, setAuthToken] = useState<string | null>(null);
   useEffect(() => {
@@ -18,7 +21,8 @@ export default function PageProdutoId({ produto, categorias }: any) {
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
+        <ChevronLeft className="cursor-pointer" onClick={() => router.back()} />
         <h1 className="text-lg font-semibold md:text-2xl">Editar produto</h1>
       </div>
       <div
@@ -66,7 +70,7 @@ export default function PageProdutoId({ produto, categorias }: any) {
                   <DialogEditProductPrice productId={productId} authToken={authToken} />
                 </Dialog>
               </div>
-              <div className="font-medium">{produto.PRODUCT_PRICE}</div>
+              <div className="font-medium">{formatPrice(produto.PRODUCT_PRICE)}</div>
             </div>
             <div className="mb-5 pb-2 border-b">
               <div className="w-full justify-between text-sm flex items-center gap-2 text-muted-foreground md:inline-flex">

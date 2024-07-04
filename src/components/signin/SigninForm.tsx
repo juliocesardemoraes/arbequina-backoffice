@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import usePost from "@/hooks/usePost"
 import { toast } from "../ui/use-toast"
 import Loading from "../ui/loading"
+import Image from "next/image"
 
 interface SigninFormValues {
   USER_EMAIL?: string;
@@ -73,6 +74,7 @@ export default function SigninForm() {
 
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center">
+      <Image src="/cabana-arbequina-light.png" width={200} height={200} alt="cabana arbeqina logo" />
       <Card style={{
         width: '30rem',
         maxWidth: '98vw',
@@ -89,12 +91,19 @@ export default function SigninForm() {
             <form onSubmit={form.handleSubmit(submitForm)} className="space-y-2">
               <FormField
                 control={form.control}
-                name="email"
+                name="USER_EMAIL"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="seu@email.com" type="email" {...field} {...form.register('USER_EMAIL')} />
+                      <Input
+                        placeholder="seu@email.com"
+                        type="email"
+                        id="USER_EMAIL"
+                        autoComplete="email"
+                        {...field}
+                        {...form.register('USER_EMAIL')}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -102,12 +111,19 @@ export default function SigninForm() {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name="USER_PASSWORD"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Senha</FormLabel>
                     <FormControl>
-                      <Input placeholder="sua password" type="password" {...field} {...form.register('USER_PASSWORD')} />
+                      <Input
+                        placeholder="sua senha"
+                        type="password"
+                        id="USER_PASSWORD"
+                        autoComplete="current-password"
+                        {...field}
+                        {...form.register('USER_PASSWORD')}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

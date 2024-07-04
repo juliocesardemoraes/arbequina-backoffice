@@ -77,7 +77,7 @@ export default function DialogEditProductQuantity({ productId, authToken }: Dial
   return (
     <DialogContent className="w-[28rem] max-w-[90vw]">
       <DialogHeader>
-        <DialogTitle className="text-center">Editar preço</DialogTitle>
+        <DialogTitle className="text-center">Editar quantidade</DialogTitle>
         <DialogDescription className="text-center">
           Digite a quantidade e aperte em salvar para concluir.
         </DialogDescription>
@@ -93,7 +93,7 @@ export default function DialogEditProductQuantity({ productId, authToken }: Dial
                   <FormLabel>Quantidade disponível</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />

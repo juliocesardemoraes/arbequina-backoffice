@@ -25,7 +25,7 @@ export default function PageConfiguracoes({ user }: any) {
       >
         <div className="flex flex-col items-center">
           <h1 className="text-lg font-semibold md:text-2xl">Olá, {user?.USER_NAME}</h1>
-          <p className="hidden text-sm text-muted-foreground md:inline">{user?.USER_EMAIL}</p>
+          <p className="text-sm text-muted-foreground md:inline">{user?.USER_EMAIL}</p>
         </div>
         <div style={{
           width: '30rem',

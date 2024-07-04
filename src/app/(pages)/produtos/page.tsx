@@ -19,7 +19,7 @@ interface Category {
   CATEGORY_NAME: string;
 }
 
-export default function PainelPage() {
+export default function ProdutosPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const [authToken, setAuthToken] = useState<string | null>(null);

@@ -1,41 +1,38 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
-import { Input } from "../ui/input";
+import { Form } from "../ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schemaUserPut } from "@/schemas/schemaUserPut";
 import { useEffect, useState } from "react";
 import usePut from "@/hooks/usePut";
 import { toast } from "../ui/use-toast";
+import Loading from "../ui/loading";
 import { CircleCheck } from "lucide-react";
+import { schemaTransactionPut } from "@/schemas/schemaTransactionPut";
 
-interface UserPutValues {
-  USER_NAME?: string;
+interface TransacoesPutValues {
+  CART_STATUS?: 'active' | 'completed' | 'canceled';
 }
 
-interface DialogEditNameProps {
-  userId: string;
-  authToken: string | null;
-}
-
-export default function DialogEditNome({ userId, authToken }: DialogEditNameProps) {
+export default function DialogFinalizarCompra({ compraId }: any) {
   const form = useForm({
     mode: 'onBlur',
-    resolver: zodResolver(schemaUserPut),
-    defaultValues: { USER_NAME: '' }
+    resolver: zodResolver(schemaTransactionPut)
   });
+  const [authToken, setAuthToken] = useState<string | null>(null);
+  useEffect(() => {
+    const token = localStorage.getItem('tokenAdmin');
+    setAuthToken(token);
+  }, [])
 
-  const [data, setData] = useState<UserPutValues>({});
   const [posted, setPosted] = useState(false);
-  const { isUpdated, isUpdating, error } = usePut(`${process.env.NEXT_PUBLIC_BASE_URL}/user/edit/${userId}`, data, posted, {
+  const { isUpdated, isUpdating, error } = usePut(`${process.env.NEXT_PUBLIC_BASE_URL}/cart/edit/${compraId}`, {CART_STATUS: 'completed'}, posted, {
     headers: {
       Authorization: `Bearer ${authToken}`
     }
   });
 
-  const submitForm: SubmitHandler<UserPutValues> = (formData) => {
-    setData(formData);
+  const submitForm: SubmitHandler<TransacoesPutValues> = () => {
     setPosted(true);
   };
 
@@ -50,11 +47,19 @@ export default function DialogEditNome({ userId, authToken }: DialogEditNameProp
     if (isUpdated) {
       setPosted(false)
       toast({
-        title: "Nome atualizado",
-        description: "Seu nome foi atualizado com sucesso."
+        title: "Compra concluida",
+        description: "Esta compra foi concluida com sucesso."
       });
     }
   }, [error, isUpdated]);
+
+  if (isUpdating) {
+    return (
+      <DialogContent onCloseAutoFocus={() => { window.location.reload()}} className="w-[28rem] max-w-[90vw]">
+        <Loading />
+      </DialogContent>
+    );
+  }
 
   if (isUpdated) {
     return (
@@ -72,29 +77,15 @@ export default function DialogEditNome({ userId, authToken }: DialogEditNameProp
   return (
     <DialogContent className="w-[28rem] max-w-[90vw]">
       <DialogHeader>
-        <DialogTitle className="text-center">Editar nome</DialogTitle>
+        <DialogTitle className="text-center">Finalizar compra</DialogTitle>
         <DialogDescription className="text-center">
-          Digite um novo nome e aperte em salvar para concluir.
+          Antes de concluir esta compra verifique se o valor total foi recebido corretamente 
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submitForm)} className="space-y-2">
-          <div className="grid gap-4 py-4">
-            <FormField
-              control={form.control}
-              name="USER_NAME"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Digite o novo nome" type="text" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
           <DialogFooter>
-            <Button type="submit">Salvar</Button>
+            <Button className="w-full" type="submit">Confirmar recebimento</Button>
           </DialogFooter>
         </form>
       </Form>

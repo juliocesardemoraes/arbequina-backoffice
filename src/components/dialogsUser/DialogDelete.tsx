@@ -53,10 +53,6 @@ export default function DialogDelete({ userId, authToken }: DialogEditNameProps)
     }
   }, [error, isDeleted]);
 
-  if (isDeleting) {
-    return <Loading />;
-  }
-
   if (isDeleted) {
     return (
       <DialogContent onCloseAutoFocus={() => { window.location.href = '/painel' }} className="w-[28rem] max-w-[90vw]">

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
 import Loading from "../ui/loading";
 import { CircleCheck } from "lucide-react";
+import formatPrice from "@/utils/formatPrice";
 
 interface ProductCreateValues {
   PRODUCT_NAME: string;
@@ -111,7 +112,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                   <FormControl>
                     <Input type="text" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -127,7 +128,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="max-h-60 overflow-y-auto">
                       {categorias
                         .filter((categoria: any) => !categoria.CATEGORY_DELETED)
                         .map((categoria: any) => (
@@ -135,7 +136,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                         ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -144,15 +145,15 @@ export default function DialogCreateProduct({ categorias }: any) {
               name="PRODUCT_QUANTITY"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quantidade em estoque</FormLabel>
+                  <FormLabel>Quantidade disponível</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
@@ -164,12 +165,16 @@ export default function DialogCreateProduct({ categorias }: any) {
                   <FormLabel>Preço do produto</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      value={formatPrice(field.value)}
+                      onChange={(e) => {
+                        const rawValue = e.target.value.replace(/[^\d]/g, '');
+                        field.onChange(Number(rawValue) / 100);
+                      }}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-[10px]" />
                 </FormItem>
               )}
             />
