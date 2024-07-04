@@ -52,7 +52,7 @@ interface PageClienteIdProps {
 }
 
 const statusMap: { [key: string]: { label: string, color: string } } = {
-  active: { label: 'Pendente', color: 'bg-orange-500' },
+  active: { label: 'Pendente', color: 'bg-orange-400' },
   completed: { label: 'Concluída', color: 'bg-green-500' },
   canceled: { label: 'Cancelada', color: 'bg-red-500' }
 };
