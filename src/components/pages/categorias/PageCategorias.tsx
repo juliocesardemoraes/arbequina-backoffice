@@ -71,10 +71,12 @@ export default function PageCategorias({ categories }: any) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <a href={`/categoria/${category._id}`}>Editar</a>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleOpenDeleteDialog(category._id)}>
+            <a href={`/categoria/${category._id}`}>
+              <DropdownMenuItem className="cursor-pointer">
+                Editar
+              </DropdownMenuItem>
+            </a>
+            <DropdownMenuItem className="cursor-pointer" disabled={category.CATEGORY_DELETED === true} onClick={() => handleOpenDeleteDialog(category._id)}>
               Deletar
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -116,18 +118,21 @@ export default function PageCategorias({ categories }: any) {
                     <DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Todos'}
                       onCheckedChange={() => handleFilterChange('Todos')}
                     >
                       Todos
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Disponível'}
                       onCheckedChange={() => handleFilterChange('Disponível')}
                     >
                       Disponível
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Indisponível'}
                       onCheckedChange={() => handleFilterChange('Indisponível')}
                     >
@@ -153,39 +158,39 @@ export default function PageCategorias({ categories }: any) {
                 <CardContent className="flex flex-1 flex-col p-0">
                   <ScrollArea className="h-[60vh] w-full">
                     {categories && categories.length > 0 ? (
-                        <Table>
-                          <TableHeader>
-                            <TableRow className="bg-muted hover:bg-muted">
-                              <TableHead>Nome</TableHead>
-                              <TableHead className="text-end hidden md:table-cell">Status</TableHead>
-                              <TableHead>
-                                <span className="sr-only">Actions</span>
-                              </TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {rows}
-                          </TableBody>
-                        </Table>
-                      ) : (
-                        <Table>
-                          <TableHeader>
-                            <TableRow className="bg-muted hover:bg-muted">
-                              <TableHead className='flex flex-col justify-center items-center'>Categorias</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell>
-                                <div className="h-[30vh] flex flex-col justify-center items-center">
-                                  <h1 className="text-lg font-semibold md:text-2xl">Vázio</h1>
-                                  <p className="text-sm text-muted-foreground md:inline">Nada por aqui..</p>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      )}
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-muted hover:bg-muted">
+                            <TableHead>Nome</TableHead>
+                            <TableHead className="text-end hidden md:table-cell">Status</TableHead>
+                            <TableHead>
+                              <span className="sr-only">Actions</span>
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {rows}
+                        </TableBody>
+                      </Table>
+                    ) : (
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="bg-muted hover:bg-muted">
+                            <TableHead className='flex flex-col justify-center items-center'>Categorias</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>
+                              <div className="h-[30vh] flex flex-col justify-center items-center">
+                                <h1 className="text-lg font-semibold md:text-2xl">Vázio</h1>
+                                <p className="text-sm text-muted-foreground md:inline">Nada por aqui..</p>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    )}
                   </ScrollArea>
                 </CardContent>
               </Card>

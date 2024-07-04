@@ -95,7 +95,7 @@ export default function PageProdutoId({ produto, categorias }: any) {
                       cursor: 'pointer'
                     }} size={20} />
                   </DialogTrigger>
-                  <DialogEditProductStatus productId={productId} authToken={authToken} />
+                  <DialogEditProductStatus productId={productId} authToken={authToken} status={produto.PRODUCT_DELETED} />
                 </Dialog>
               </div>
               <div className="font-medium">{produto.PRODUCT_DELETED ? 'Indisponível' : 'Disponível'}</div>
