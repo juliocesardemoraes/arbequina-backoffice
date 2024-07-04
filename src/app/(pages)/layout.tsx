@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link"
-import { CircleUser, Home, Menu, Package, Package2, ShoppingCart, Users, Settings, Boxes, LayoutPanelLeft, ArrowLeftRight } from "lucide-react"
+import { CircleUser, Menu, Package, Users, Settings, Boxes, LayoutPanelLeft, ArrowLeftRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"

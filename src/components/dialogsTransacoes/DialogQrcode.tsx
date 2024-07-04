@@ -1,6 +1,6 @@
 import { Copy } from "lucide-react";
 import { Button } from "../ui/button";
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
+import { DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import formatPrice from "@/utils/formatPrice";
 import Image from "next/image";
 import { toast } from "../ui/use-toast";

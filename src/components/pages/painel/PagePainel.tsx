@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import formatDate from "@/utils/formatDate";
 import formatPrice from "@/utils/formatPrice";
-import { Activity, CreditCard, DollarSign, ListFilter, MoreHorizontal, PieChart, ShoppingCart, Users } from "lucide-react";
+import { Activity, DollarSign, ListFilter, MoreHorizontal, PieChart, Users } from "lucide-react";
 import { useState } from "react";
 
 interface Compra {

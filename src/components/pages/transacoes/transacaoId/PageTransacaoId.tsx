@@ -3,11 +3,11 @@ import DialogFinalizarCompra from "@/components/dialogsTransacoes/DialogFinaliza
 import DialogQrcode from "@/components/dialogsTransacoes/DialogQrcode";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import formatDate from "@/utils/formatDate";
 import formatPrice from "@/utils/formatPrice";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { ChevronLeft, Copy, QrCode } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface Product {

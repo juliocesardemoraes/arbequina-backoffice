@@ -8,7 +8,6 @@ import { schemaUserPut } from "@/schemas/schemaUserPut";
 import { useEffect, useState } from "react";
 import usePut from "@/hooks/usePut";
 import { toast } from "../ui/use-toast";
-import Loading from "../ui/loading";
 import { CircleCheck } from "lucide-react";
 
 interface UserPutValues {
