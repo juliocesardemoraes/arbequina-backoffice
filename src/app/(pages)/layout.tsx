@@ -189,7 +189,7 @@ export default function PagesLayout({
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>{data?.USER_EMAIL}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout}>Sair</DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer" onClick={logout}>Sair</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

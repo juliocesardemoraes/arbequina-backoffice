@@ -51,7 +51,7 @@ export default function PageClientes({ users }: PageClientesProps) {
         <div className="flex items-center">
           <div className={`w-2 h-2 rounded-full ${user.USER_DELETED ? 'bg-red-500' : 'bg-green-500'} mr-2 md:hidden`} />
           <span className="text-sm">{user.USER_NAME}</span>
-          <span className="text-[10px] ml-3 text-muted-foreground md:hidden">{user?.USER_ADMIN && 'Administrador'}</span>
+          <span className="text-[10px] ml-3 text-muted-foreground">{user?.USER_ADMIN && 'Admin'}</span>
         </div>
         <div className="text-sm text-muted-foreground mb-1 ">{user.USER_EMAIL}</div>
       </TableCell>
@@ -75,9 +75,11 @@ export default function PageClientes({ users }: PageClientesProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <a href={`/cliente/${user._id}`}>Detalhes</a>
-            </DropdownMenuItem>
+            <a href={`/cliente/${user._id}`}>
+              <DropdownMenuItem className="cursor-pointer">
+                Detalhes
+              </DropdownMenuItem>
+            </a>
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>
@@ -115,18 +117,21 @@ export default function PageClientes({ users }: PageClientesProps) {
                     <DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Todos'}
                       onCheckedChange={() => handleFilterChange('Todos')}
                     >
                       Todos
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Ativo'}
                       onCheckedChange={() => handleFilterChange('Ativo')}
                     >
                       Ativo
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Desativado'}
                       onCheckedChange={() => handleFilterChange('Desativado')}
                     >

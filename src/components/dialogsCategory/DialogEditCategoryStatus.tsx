@@ -17,9 +17,10 @@ interface CategoryPutValues {
 interface DialogEditCategoryStatus {
   categoryId: string;
   authToken: string | null;
+  status: boolean;
 }
 
-export default function DialogEditCategoryStatus({ categoryId, authToken }: DialogEditCategoryStatus) {
+export default function DialogEditCategoryStatus({ categoryId, authToken, status }: DialogEditCategoryStatus) {
   const form = useForm({
     mode: 'onBlur',
     resolver: zodResolver(schemaCategoryPut),
@@ -81,7 +82,7 @@ export default function DialogEditCategoryStatus({ categoryId, authToken }: Dial
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submitForm)} className="space-y-2">
           <DialogFooter>
-            <Button className="w-full" type="submit">Mudar para disponivel</Button>
+            <Button className="w-full" type="submit" disabled={status === false}>Mudar para disponivel</Button>
           </DialogFooter>
         </form>
       </Form>

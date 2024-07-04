@@ -49,7 +49,7 @@ export default function PageCategoriaId({ categoria }: any) {
                       cursor: 'pointer'
                     }} size={20} />
                   </DialogTrigger>
-                  <DialogEditCategoryStatus categoryId={categorytId} authToken={authToken} />
+                  <DialogEditCategoryStatus categoryId={categorytId} authToken={authToken} status={categoria.CATEGORY_DELETED}/>
                 </Dialog>
               </div>
               <div className="font-medium">{categoria.CATEGORY_DELETED ? 'Indisponível' : 'Disponível'}</div>

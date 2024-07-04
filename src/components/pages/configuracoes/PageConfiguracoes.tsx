@@ -24,8 +24,8 @@ export default function PageConfiguracoes({ user }: any) {
         className="flex flex-1 flex-col gap-4 items-center justify-center rounded-lg shadow-sm" x-chunk="dashboard-02-chunk-1"
       >
         <div className="flex flex-col items-center">
-          <h1 className="text-lg font-semibold md:text-2xl">Olá, {user?.USER_NAME}</h1>
-          <p className="text-sm text-muted-foreground md:inline">{user?.USER_EMAIL}</p>
+          <h1 className="text-lg text-center font-semibold md:text-2xl">Olá, {user?.USER_NAME}</h1>
+          <p className="text-sm text-center text-muted-foreground md:inline">{user?.USER_EMAIL}</p>
         </div>
         <div style={{
           width: '30rem',

@@ -79,7 +79,7 @@ export default function DialogDeleteCategory(categoryId: any) {
   return (
     <DialogContent className="w-[28rem] max-w-[90vw]">
       <DialogHeader>
-        <DialogTitle className="text-center">Deletar este produto?</DialogTitle>
+        <DialogTitle className="text-center">Deletar esta categoria?</DialogTitle>
         <DialogDescription className="text-center">
           A categoria receberá uma marcação de indispinível e deixará de ser visivel ao criar ou editar novos produtos, dessa forma ele não é apagado do banco e pode ser recuperada editando o status para disponivel.
         </DialogDescription>

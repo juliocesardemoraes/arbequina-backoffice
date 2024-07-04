@@ -79,7 +79,7 @@ export default function DialogEditSenha({ userId, authToken }: DialogEditNamePro
       </DialogHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submitForm)} className="space-y-2">
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 pb-4">
             <FormField
               control={form.control}
               name="USER_PASSWORD"

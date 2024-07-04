@@ -89,10 +89,12 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <a href={`/produto/${produto._id}`}>Editar</a>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => handleOpenDeleteDialog(produto._id)}>
+            <a href={`/produto/${produto._id}`}>
+              <DropdownMenuItem className="cursor-pointer">
+                Editar
+              </DropdownMenuItem>
+            </a>
+            <DropdownMenuItem className="cursor-pointer" disabled={produto.PRODUCT_DELETED === true} onClick={() => handleOpenDeleteDialog(produto._id)}>
               Deletar
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -134,18 +136,21 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
                     <DropdownMenuLabel>Filtrar por status</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Todos'}
                       onCheckedChange={() => handleFilterChange('Todos')}
                     >
                       Todos
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Disponível'}
                       onCheckedChange={() => handleFilterChange('Disponível')}
                     >
                       Disponível
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={filter === 'Indisponível'}
                       onCheckedChange={() => handleFilterChange('Indisponível')}
                     >
@@ -154,6 +159,7 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
                     <DropdownMenuSeparator />
                     <DropdownMenuLabel>Filtrar por categoria</DropdownMenuLabel>
                     <DropdownMenuCheckboxItem
+                      className="cursor-pointer"
                       checked={selectedCategory === 'Todas'}
                       onCheckedChange={() => handleCategoryChange('Todas')}
                     >
@@ -161,6 +167,7 @@ export default function PageProdutos({ produtos, categorias }: PageProdutosProps
                     </DropdownMenuCheckboxItem>
                     {categorias.map((categoria: any) => (
                       <DropdownMenuCheckboxItem
+                        className="cursor-pointer"
                         key={categoria._id}
                         checked={selectedCategory === categoria.CATEGORY_NAME}
                         onCheckedChange={() => handleCategoryChange(categoria.CATEGORY_NAME)}

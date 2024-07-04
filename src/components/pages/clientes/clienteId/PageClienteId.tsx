@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import formatDate from '@/utils/formatDate';
 import formatPrice from '@/utils/formatPrice';
-import { ChevronLeft, ListFilter, MoreHorizontal } from 'lucide-react';
+import { Activity, ChevronLeft, ListFilter, MoreHorizontal, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -105,9 +105,11 @@ export default function PageClienteId({ user, compras, stats }: PageClienteIdPro
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <a href={`/transacao/${compra._id}`}>Detalhes</a>
-            </DropdownMenuItem>
+            <a href={`/transacao/${compra._id}`}>
+              <DropdownMenuItem className="cursor-pointer">
+                Detalhes
+              </DropdownMenuItem>
+            </a>
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>
@@ -127,26 +129,28 @@ export default function PageClienteId({ user, compras, stats }: PageClienteIdPro
               <Card x-chunk="dashboard-01-chunk-0">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Informações do cliente</CardTitle>
+                  <div className="text-xs ml-auto pr-1 text-muted-foreground">{user?.USER_ADMIN ? 'Admin' : 'Cliente'}</div>
+                  <User className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className='flex'>
-                    <div className="text-2xl font-bold">{user?.USER_NAME}</div>
-                    <div className="ml-auto flex items-center gap-1">
-                      <div className={`w-2 h-2 rounded-full mx-1 ${user?.USER_DELETED ? 'bg-red-500' : 'bg-green-500'}`} />
-                      <span className="text-xs">{user?.USER_DELETED ? 'Conta desativada' : 'Conta ativa'}</span>
-                    </div>
+                    <div className="text-xl font-bold">{user?.USER_NAME}</div>
                   </div>
                   <div className="text-sm mt-1">{user?.USER_EMAIL}</div>
                   <div className="text-sm text-muted-foreground mt-1">Criado em {formatDate(user?.createdAt)}</div>
                   <div className='border-t-[1px] mt-4 pt-4'>
-                    <div className="text-xs text-muted-foreground">Nivel:</div>
-                    <div className="text-sm text-muted-foreground">{user?.USER_ADMIN ? 'Administrador' : 'Cliente'}</div>
+                    <div className="text-xs text-muted-foreground">Status da conta:</div>
+                    <div className="ml-auto flex items-center gap-1">
+                      <div className={`w-2 h-2 rounded-full ${user?.USER_DELETED ? 'bg-red-500' : 'bg-green-500'}`} />
+                      <span className="text-sm">{user?.USER_DELETED ? 'Desativado' : 'Ativo'}</span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
               <Card x-chunk="dashboard-01-chunk-1">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Resumo do cliente</CardTitle>
+                  <Activity className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{formatPrice(stats.totalCompletedValue)}<span className="text-sm font-normal text-muted-foreground"> em compras</span></div>
@@ -178,24 +182,28 @@ export default function PageClienteId({ user, compras, stats }: PageClienteIdPro
                         <DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuCheckboxItem
+                          className="cursor-pointer"
                           checked={filter === 'Todos'}
                           onCheckedChange={() => handleFilterChange('Todos')}
                         >
                           Todos
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
+                          className="cursor-pointer"
                           checked={filter === 'Pendente'}
                           onCheckedChange={() => handleFilterChange('Pendente')}
                         >
                           Pendente
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
+                          className="cursor-pointer"
                           checked={filter === 'Concluído'}
                           onCheckedChange={() => handleFilterChange('Concluído')}
                         >
                           Concluído
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
+                          className="cursor-pointer"
                           checked={filter === 'Cancelado'}
                           onCheckedChange={() => handleFilterChange('Cancelado')}
                         >

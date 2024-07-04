@@ -101,9 +101,11 @@ export default function PagePainel({ compras, stats }: PagePainelProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <a href={`/transacao/${compra._id}`}>Detalhes</a>
-            </DropdownMenuItem>
+            <a href={`/transacao/${compra._id}`}>
+              <DropdownMenuItem className="cursor-pointer">
+                Detalhes
+              </DropdownMenuItem>
+            </a>
           </DropdownMenuContent>
         </DropdownMenu>
       </TableCell>
@@ -184,24 +186,28 @@ export default function PagePainel({ compras, stats }: PagePainelProps) {
                         <DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuCheckboxItem
+                          className="cursor-pointer"
                           checked={filter === 'Todos'}
                           onCheckedChange={() => handleFilterChange('Todos')}
                         >
                           Todos
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
+                          className="cursor-pointer"
                           checked={filter === 'Pendente'}
                           onCheckedChange={() => handleFilterChange('Pendente')}
                         >
                           Pendente
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
+                          className="cursor-pointer"
                           checked={filter === 'Concluído'}
                           onCheckedChange={() => handleFilterChange('Concluído')}
                         >
                           Concluído
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
+                          className="cursor-pointer"
                           checked={filter === 'Cancelado'}
                           onCheckedChange={() => handleFilterChange('Cancelado')}
                         >
