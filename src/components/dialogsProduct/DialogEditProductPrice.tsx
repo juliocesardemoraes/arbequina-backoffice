@@ -10,6 +10,7 @@ import { toast } from "../ui/use-toast";
 import Loading from "../ui/loading";
 import { CircleCheck } from "lucide-react";
 import { schemaProductPut } from "@/schemas/schemaProductPut";
+import formatPrice from "@/utils/formatPrice";
 
 interface ProductPutValues {
   PRODUCT_PRICE: number;
@@ -63,7 +64,7 @@ export default function DialogEditProductPrice({ productId, authToken }: DialogE
 
   if (isUpdated) {
     return (
-      <DialogContent onCloseAutoFocus={() => { window.location.reload()}} className="w-[28rem] max-w-[90vw]">
+      <DialogContent onCloseAutoFocus={() => { window.location.reload() }} className="w-[28rem] max-w-[90vw]">
         <DialogHeader>
           <div className="flex justify-center p-4">
             <CircleCheck size={60} color="#15ba12" />
@@ -85,7 +86,7 @@ export default function DialogEditProductPrice({ productId, authToken }: DialogE
       <Form {...form}>
         <form onSubmit={form.handleSubmit(submitForm)} className="space-y-2">
           <div className="grid gap-4 py-4">
-          <FormField
+            <FormField
               control={form.control}
               name="PRODUCT_PRICE"
               render={({ field }) => (
@@ -93,9 +94,13 @@ export default function DialogEditProductPrice({ productId, authToken }: DialogE
                   <FormLabel>Preço do produto</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      value={formatPrice(field.value)}
+                      onChange={(e) => {
+                        const rawValue = e.target.value.replace(/[^\d]/g, '');
+                        field.onChange(Number(rawValue) / 100);
+                      }}
                     />
                   </FormControl>
                 </FormItem>

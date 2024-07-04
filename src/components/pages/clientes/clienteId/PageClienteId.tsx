@@ -43,6 +43,7 @@ interface CompraStats {
   canceledCount: number;
   totalCompletedValue: number;
   totalActiveValue: number;
+  totalTransactions: number;
 }
 
 interface PageClienteIdProps {
@@ -151,6 +152,7 @@ export default function PageClienteId({ user, compras, stats }: PageClienteIdPro
                 <CardContent>
                   <div className="text-2xl font-bold">{formatPrice(stats.totalCompletedValue)}<span className="text-sm font-normal text-muted-foreground"> em compras</span></div>
                   <div className="text-sm text-muted-foreground">+ {formatPrice(stats.totalActiveValue)} em compras pendetes</div>
+                  <div className="text-sm text-muted-foreground">{stats.totalTransactions} compras ao todo</div>
                   <div className='border-t-[1px] mt-4 pt-4'>
                     <div className="text-sm text-muted-foreground">{stats.completedCount} Compras concluídas</div>
                     <div className="text-sm text-muted-foreground">{stats.activeCount} Compras pendentes</div>
@@ -161,7 +163,8 @@ export default function PageClienteId({ user, compras, stats }: PageClienteIdPro
             </div>
             <div className="mb-10">
               <Tabs className="w-full" defaultValue="all">
-                <div className="flex items-center">
+                <div className="flex items-center pb-2">
+                  <div className="text-lg font-semibold md:text-2xl">Ultimas compras</div>
                   <div className="ml-auto flex items-center gap-2">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

@@ -37,6 +37,7 @@ interface CompraStats {
   canceledCount: number;
   totalCompletedValue: number;
   totalActiveValue: number;
+  totalTransactions: number;
 }
 
 interface UserDetailsPageProps {
@@ -58,6 +59,7 @@ export default function ClienteIdPage({ params }: UserDetailsPageProps) {
     canceledCount: 0,
     totalCompletedValue: 0,
     totalActiveValue: 0,
+    totalTransactions: 0,
   });
 
   const userId = params.id;
@@ -126,6 +128,7 @@ export default function ClienteIdPage({ params }: UserDetailsPageProps) {
         setFetchLoading(false);
 
         const stats = data.reduce((acc, compra) => {
+          acc.totalTransactions++;
           switch (compra.CART_STATUS) {
             case 'active':
               acc.activeCount++;
@@ -146,6 +149,7 @@ export default function ClienteIdPage({ params }: UserDetailsPageProps) {
           canceledCount: 0,
           totalCompletedValue: 0,
           totalActiveValue: 0,
+          totalTransactions: 0,
         });
 
         setCompraStats(stats);

@@ -161,7 +161,7 @@ export default function PagePainel({ compras, stats }: PagePainelProps) {
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-sm text-muted-foreground">{stats.totalUsers} usuários ao total</div>
+                  <div className="text-sm text-muted-foreground">{stats.totalUsers} total</div>
                   <div className="text-sm text-muted-foreground">{stats.activeUsers} ativos</div>
                   <div className="text-sm text-muted-foreground">{stats.deactivatedUsers} desativados</div>
                 </CardContent>

@@ -145,7 +145,7 @@ export default function DialogCreateProduct({ categorias }: any) {
               name="PRODUCT_QUANTITY"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quantidade em estoque</FormLabel>
+                  <FormLabel>Quantidade disponível</FormLabel>
                   <FormControl>
                     <Input
                       type="text"

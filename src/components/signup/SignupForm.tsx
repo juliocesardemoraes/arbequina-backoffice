@@ -9,7 +9,6 @@ import { schemaSignup } from "@/schemas/schemaSignup"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import usePost from "@/hooks/usePost"
 import { useEffect, useState } from "react"
-import { useAuth } from "@/contexts/AuthContext"
 import { toast } from "../ui/use-toast"
 import Loading from "../ui/loading"
 
@@ -20,7 +19,6 @@ interface SignupFormValues {
 }
 
 export default function SignupForm() {
-  const { login } = useAuth();
   const form = useForm({
     mode: 'onBlur',
     resolver: zodResolver(schemaSignup)
@@ -53,23 +51,31 @@ export default function SignupForm() {
     }
     if (isPosted) {
       setPosted(false)
-      const TokenUser = token?.token as string;
-      const TokenAdmin = token?.tokenAdmin as string;
-      if (!TokenAdmin) {
-        toast({
-          title: 'Conta criada!!',
-          description: 'Faça o login na area de ligin'
-        })
-      } else {
-        localStorage.setItem('token', TokenUser)
-        localStorage.setItem('tokenAdmin', TokenAdmin)
-        login()
-      }
+      toast({
+        title: 'Conta criada!!',
+        description: 'Faça o login na área de login'
+      })
     }
   }, [error409, error, isPosted]);
 
   if (isPosting) {
     return <Loading />;
+  }
+
+  if (isPosted) {
+    return (
+      <main className="flex h-screen w-screen flex-col items-center justify-center">
+        <div className="p-6 rounded-lg shadow-lg text-center">
+          <h1 className="text-2xl font-semibold mb-2">Olá, {data.USER_NAME}</h1>
+          <p className="mb-4 text-sm text-muted-foreground">É muito bom ter você por aqui!</p>
+          <a href="/">
+            <Button>
+              Acessar minha conta
+            </Button>
+          </a>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -90,25 +96,6 @@ export default function SignupForm() {
             <form onSubmit={form.handleSubmit(submitForm)} className="space-y-2">
               <FormField
                 control={form.control}
-                name="USER_NAME"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Digite seu nome"
-                        type="text"
-                        id="USER_NAME"
-                        {...field}
-                        {...form.register('USER_NAME')}
-                      />
-                    </FormControl>
-                    <FormMessage style={{fontSize: '12px'}} />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
                 name="USER_EMAIL"
                 render={({ field }) => (
                   <FormItem>
@@ -118,11 +105,12 @@ export default function SignupForm() {
                         placeholder="Digite seu email"
                         type="email"
                         id="USER_EMAIL"
+                        autoComplete="username"
                         {...field}
                         {...form.register('USER_EMAIL')}
                       />
                     </FormControl>
-                    <FormMessage style={{fontSize: '12px'}} />
+                    <FormMessage style={{ fontSize: '12px' }} />
                   </FormItem>
                 )}
               />
@@ -137,16 +125,37 @@ export default function SignupForm() {
                         placeholder="Digite sua senha"
                         type="password"
                         id="USER_PASSWORD"
+                        autoComplete="new-password"
                         {...field}
                         {...form.register('USER_PASSWORD')}
                       />
                     </FormControl>
-                    <FormMessage style={{fontSize: '12px'}} />
+                    <FormMessage style={{ fontSize: '12px' }} />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="USER_NAME"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Digite seu nome"
+                        type="text"
+                        id="USER_NAME"
+                        autoComplete="name"
+                        {...field}
+                        {...form.register('USER_NAME')}
+                      />
+                    </FormControl>
+                    <FormMessage style={{ fontSize: '12px' }} />
                   </FormItem>
                 )}
               />
               <div>
-                <Button className="w-full mt-4" type="submit">Cadastar</Button>
+                <Button className="w-full mt-4" type="submit">Cadastrar</Button>
               </div>
             </form>
           </Form>
