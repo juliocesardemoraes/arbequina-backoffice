@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Loading from '@/components/ui/loading';
-import PageClienteId from '@/components/pages/clientes/clienteId/PageClienteId'; // Importe o componente de detalhes do cliente
+import PageClienteId from '@/components/pages/clientes/clienteId/PageClienteId';
 
 interface User {
   USER_ADMIN: boolean;
@@ -31,19 +31,34 @@ interface Compra {
   __v: number;
 }
 
+interface CompraStats {
+  activeCount: number;
+  completedCount: number;
+  canceledCount: number;
+  totalCompletedValue: number;
+  totalActiveValue: number;
+}
+
 interface UserDetailsPageProps {
   params: {
     id: string;
   };
 }
 
-export default function UserDetails({ params }: UserDetailsPageProps) {
+export default function ClienteIdPage({ params }: UserDetailsPageProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [compras, setCompras] = useState<Compra[]>([]);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [fetchLoading, setFetchLoading] = useState<boolean>(true);
+  const [compraStats, setCompraStats] = useState<CompraStats>({
+    activeCount: 0,
+    completedCount: 0,
+    canceledCount: 0,
+    totalCompletedValue: 0,
+    totalActiveValue: 0,
+  });
 
   const userId = params.id;
 
@@ -109,6 +124,31 @@ export default function UserDetails({ params }: UserDetailsPageProps) {
 
         setCompras(sortedData);
         setFetchLoading(false);
+
+        const stats = data.reduce((acc, compra) => {
+          switch (compra.CART_STATUS) {
+            case 'active':
+              acc.activeCount++;
+              acc.totalActiveValue += compra.CART_PRICE;
+              break;
+            case 'completed':
+              acc.completedCount++;
+              acc.totalCompletedValue += compra.CART_PRICE;
+              break;
+            case 'canceled':
+              acc.canceledCount++;
+              break;
+          }
+          return acc;
+        }, {
+          activeCount: 0,
+          completedCount: 0,
+          canceledCount: 0,
+          totalCompletedValue: 0,
+          totalActiveValue: 0,
+        });
+
+        setCompraStats(stats);
       } catch (error: any) {
         console.error('Fetch compras error:', error);
         setFetchError(error.message);
@@ -129,5 +169,5 @@ export default function UserDetails({ params }: UserDetailsPageProps) {
     return <div>Error: {fetchError}</div>;
   }
 
-  return user ? <PageClienteId user={user} compras={compras} /> : <Loading />;
+  return user ? <PageClienteId user={user} compras={compras} stats={compraStats} /> : <Loading />;
 }

@@ -57,10 +57,6 @@ export default function DialogEditSenha({ userId, authToken }: DialogEditNamePro
     }
   }, [error, isUpdated]);
 
-  if (isUpdating) {
-    return <Loading />;
-  }
-
   if (isUpdated) {
     return (
       <DialogContent onCloseAutoFocus={() => { window.location.reload()}} className="w-[28rem] max-w-[90vw]">

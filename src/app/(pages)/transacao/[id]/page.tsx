@@ -36,7 +36,7 @@ interface CompraIdPageProps {
   }
 }
 
-export default function TransacaoDetalhes({ params }: CompraIdPageProps) {
+export default function TransacaoIdPage({ params }: CompraIdPageProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const [authToken, setAuthToken] = useState<string | null>(null);

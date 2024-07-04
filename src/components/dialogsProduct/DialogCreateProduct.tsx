@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
 import Loading from "../ui/loading";
 import { CircleCheck } from "lucide-react";
+import formatPrice from "@/utils/formatPrice";
 
 interface ProductCreateValues {
   PRODUCT_NAME: string;
@@ -147,7 +148,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                   <FormLabel>Quantidade em estoque</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
@@ -164,9 +165,13 @@ export default function DialogCreateProduct({ categorias }: any) {
                   <FormLabel>Preço do produto</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
+                      type="text"
                       {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      value={formatPrice(field.value)}
+                      onChange={(e) => {
+                        const rawValue = e.target.value.replace(/[^\d]/g, '');
+                        field.onChange(Number(rawValue) / 100);
+                      }}
                     />
                   </FormControl>
                   <FormMessage className="text-[10px]" />

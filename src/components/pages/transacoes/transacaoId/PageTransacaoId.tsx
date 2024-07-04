@@ -68,12 +68,12 @@ export default function PageTransacaoId({ compra, produtos }: PageCompraIdProps)
           >
             <CardHeader className="flex flex-row items-start bg-muted/50 py-4">
               <div className="grid gap-0.5">
-                <CardDescription>Nº da compra {compra?._id}</CardDescription>
+                <CardDescription className="pr-5">Nº da compra {compra?._id}</CardDescription>
                 <CardTitle className="group flex items-center gap-2 text-sm">{compra?.USER_NAME}</CardTitle>
                 <CardDescription>{formatDate(compra?.createdAt)}</CardDescription>
               </div>
               <div className="ml-auto flex items-center !mt-0 gap-1">
-                <span className={`w-2.5 h-2.5 rounded-full ${getStatusLabelAndClass(compra?.CART_STATUS || '').color}`} />
+                <span className={`w-2 h-2 rounded-full ${getStatusLabelAndClass(compra?.CART_STATUS || '').color}`} />
                 <CardDescription className="text-[10px]">{getStatusLabelAndClass(compra?.CART_STATUS || '').label}</CardDescription>
               </div>
             </CardHeader>
@@ -107,7 +107,7 @@ export default function PageTransacaoId({ compra, produtos }: PageCompraIdProps)
               <div className="flex flex-row justify-center md:justify-end w-full gap-2">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="destructive" className="h-7 px-3" disabled={compra?.CART_STATUS !== 'active'}>
+                    <Button variant="destructive" className="px-3" disabled={compra?.CART_STATUS !== 'active'}>
                       <span>
                         Cancelar
                       </span>
@@ -117,7 +117,7 @@ export default function PageTransacaoId({ compra, produtos }: PageCompraIdProps)
                 </Dialog>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="h-7 px-3" disabled={compra?.CART_STATUS !== 'active'}>
+                    <Button className="px-3" disabled={compra?.CART_STATUS !== 'active'}>
                       <span>
                         Cobrar
                       </span>
@@ -127,7 +127,7 @@ export default function PageTransacaoId({ compra, produtos }: PageCompraIdProps)
                     <DialogHeader>
                       <div className="flex justify-center">
                         <QrCode size={200} />
-                        {/* TODO ADICIONAR QRCODE REAL */}
+                        {/* TODO ADICIONAR QRCODE REAL E COPIA E COLA*/}
                       </div>
                       <DialogDescription className="text-center text-sm">Efetue o pagamento</DialogDescription>
                       <DialogTitle className="text-center">Valor total {formatPrice(compra?.CART_PRICE)}</DialogTitle>
@@ -142,7 +142,7 @@ export default function PageTransacaoId({ compra, produtos }: PageCompraIdProps)
                 </Dialog>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="h-7 px-3" disabled={compra?.CART_STATUS !== 'active'}>
+                    <Button className="px-3" disabled={compra?.CART_STATUS !== 'active'}>
                       <span>
                         Finalizar
                       </span>

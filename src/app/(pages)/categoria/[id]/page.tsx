@@ -6,7 +6,7 @@ import Loading from '@/components/ui/loading';
 import useGet from '@/hooks/useGet';
 import PageCategoriaId from '@/components/pages/categorias/categoriaId/PageCategoriaId';
 
-export default function CategoryIdPage({ params }: any) {
+export default function CategoriaIdPage({ params }: any) {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const [authToken, setAuthToken] = useState<string | null>(null);

@@ -6,7 +6,7 @@ import Loading from '@/components/ui/loading';
 import PageConfiguracoes from '@/components/pages/configuracoes/PageConfiguracoes';
 import useGet from '@/hooks/useGet';
 
-export default function PainelPage() {
+export default function ConfiguracoesPage() {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const [authToken, setAuthToken] = useState<string | null>(null)
