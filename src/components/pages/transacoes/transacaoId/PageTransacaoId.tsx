@@ -1,5 +1,6 @@
 import DialogCancelarCompra from "@/components/dialogsTransacoes/DialogCancelarCompra";
 import DialogFinalizarCompra from "@/components/dialogsTransacoes/DialogFinalizarCompra";
+import DialogQrcode from "@/components/dialogsTransacoes/DialogQrcode";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -80,7 +81,7 @@ export default function PageTransacaoId({ compra, produtos }: PageCompraIdProps)
             <CardContent className="px-4 py-4 text-sm">
               <div className="grid gap-4">
                 <div className="font-semibold px-2">Produtos</div>
-                <ScrollArea className="h-[39vh] w-full overflow-auto border py-2 rounded-lg">
+                <ScrollArea className="h-[37vh] w-full overflow-auto border py-2 rounded-lg">
                   <ul className="grid gap-3 mx-4">
                     {produtos.map((produto, index) => (
                       <li key={index} className="flex items-center justify-between">
@@ -124,20 +125,7 @@ export default function PageTransacaoId({ compra, produtos }: PageCompraIdProps)
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="w-[28rem] max-w-[90vw]">
-                    <DialogHeader>
-                      <div className="flex justify-center">
-                        <QrCode size={200} />
-                        {/* TODO ADICIONAR QRCODE REAL E COPIA E COLA*/}
-                      </div>
-                      <DialogDescription className="text-center text-sm">Efetue o pagamento</DialogDescription>
-                      <DialogTitle className="text-center">Valor total {formatPrice(compra?.CART_PRICE)}</DialogTitle>
-                      <DialogDescription className="text-center text-sm">
-                        <Button className='my-2 gap-2'>
-                          <Copy size={20} />
-                          <span>copiar chave PIX</span>
-                        </Button>
-                      </DialogDescription>
-                    </DialogHeader>
+                    <DialogQrcode price={formatPrice(compra?.CART_PRICE)} />
                   </DialogContent>
                 </Dialog>
                 <Dialog>
