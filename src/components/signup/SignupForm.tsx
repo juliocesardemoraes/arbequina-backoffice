@@ -1,61 +1,94 @@
-'use client'
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { schemaSignup } from "@/schemas/schemaSignup"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
-import usePost from "@/hooks/usePost"
-import { useEffect, useState } from "react"
-import { toast } from "../ui/use-toast"
-import Loading from "../ui/loading"
-import Image from "next/image"
+"use client";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { schemaSignup } from "@/schemas/schemaSignup";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import usePost from "@/hooks/usePost";
+import { useEffect, useState } from "react";
+import { toast } from "../ui/use-toast";
+import Loading from "../ui/loading";
+import Image from "next/image";
+import { PasswordInput } from "../inputWithEye/Passwordinput";
 
 interface SignupFormValues {
   USER_NAME?: string;
   USER_EMAIL?: string;
   USER_PASSWORD?: string;
+  USER_PASSWORD_CHECK?: string;
 }
 
 export default function SignupForm() {
   const form = useForm({
-    mode: 'onBlur',
-    resolver: zodResolver(schemaSignup)
-  })
+    mode: "onBlur",
+    resolver: zodResolver(schemaSignup),
+  });
 
   const [posted, setPosted] = useState(false);
-  const [data, setData] = useState<SignupFormValues>({ USER_EMAIL: '', USER_NAME: '', USER_PASSWORD: '' });
+  const [data, setData] = useState<SignupFormValues>({
+    USER_EMAIL: "",
+    USER_NAME: "",
+    USER_PASSWORD: "",
+    USER_PASSWORD_CHECK: "",
+  });
 
-  const { token, isPosted, isPosting, error, error409 } = usePost<SignupFormValues>(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/register`, data, posted);
+  const { token, isPosted, isPosting, error, error409 } =
+    usePost<SignupFormValues>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register`,
+      data,
+      posted
+    );
 
   const submitForm: SubmitHandler<SignupFormValues> = (formData) => {
-    setData(formData)
-    setPosted(true)
-  }
+    if (formData?.USER_PASSWORD !== formData?.USER_PASSWORD_CHECK) {
+      toast({
+        title: "Erro no cadastro",
+        description: "As senhas não são iguais",
+        variant: "destructive",
+      });
+    }
+
+    setData(formData);
+    setPosted(true);
+  };
 
   useEffect(() => {
     if (error409) {
-      setPosted(false)
+      setPosted(false);
       toast({
         title: error409.error,
-        description: error409.message
-      })
+        description: error409.message,
+      });
     }
     if (error) {
-      setPosted(false)
+      setPosted(false);
       toast({
         title: error.error,
-        description: error.message
-      })
+        description: error.message,
+      });
     }
     if (isPosted) {
-      setPosted(false)
+      setPosted(false);
       toast({
-        title: 'Conta criada!!',
-        description: 'Faça o login na área de login'
-      })
+        title: "Conta criada!!",
+        description: "Faça o login na área de login",
+      });
     }
   }, [error409, error, isPosted]);
 
@@ -68,11 +101,11 @@ export default function SignupForm() {
       <main className="flex h-screen w-screen flex-col items-center justify-center">
         <div className="p-6 rounded-lg shadow-lg text-center">
           <h1 className="text-2xl font-semibold mb-2">Olá, {data.USER_NAME}</h1>
-          <p className="mb-4 text-sm text-muted-foreground">É muito bom ter você por aqui!</p>
+          <p className="mb-4 text-sm text-muted-foreground">
+            É muito bom ter você por aqui!
+          </p>
           <a href="/">
-            <Button>
-              Acessar minha conta
-            </Button>
+            <Button>Acessar minha conta</Button>
           </a>
         </div>
       </main>
@@ -81,12 +114,19 @@ export default function SignupForm() {
 
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center">
-      <Image src="/cabana-arbequina-light.png" width={100} height={100} alt="cabana arbeqina logo" />
-      <Card style={{
-        width: '30rem',
-        maxWidth: '98vw',
-        border: 'none'
-      }}>
+      <Image
+        src="/cabana-arbequina-light.png"
+        width={100}
+        height={100}
+        alt="cabana arbeqina logo"
+      />
+      <Card
+        style={{
+          width: "30rem",
+          maxWidth: "98vw",
+          border: "none",
+        }}
+      >
         <CardHeader>
           <CardTitle className="text-2xl">Cadastro</CardTitle>
           <CardDescription>
@@ -95,7 +135,10 @@ export default function SignupForm() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(submitForm)} className="space-y-2">
+            <form
+              onSubmit={form.handleSubmit(submitForm)}
+              className="space-y-2"
+            >
               <FormField
                 control={form.control}
                 name="USER_EMAIL"
@@ -109,33 +152,14 @@ export default function SignupForm() {
                         id="USER_EMAIL"
                         autoComplete="username"
                         {...field}
-                        {...form.register('USER_EMAIL')}
+                        {...form.register("USER_EMAIL")}
                       />
                     </FormControl>
-                    <FormMessage style={{ fontSize: '12px' }} />
+                    <FormMessage style={{ fontSize: "12px" }} />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="USER_PASSWORD"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Senha</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Digite sua senha"
-                        type="password"
-                        id="USER_PASSWORD"
-                        autoComplete="new-password"
-                        {...field}
-                        {...form.register('USER_PASSWORD')}
-                      />
-                    </FormControl>
-                    <FormMessage style={{ fontSize: '12px' }} />
-                  </FormItem>
-                )}
-              />
+
               <FormField
                 control={form.control}
                 name="USER_NAME"
@@ -149,15 +173,55 @@ export default function SignupForm() {
                         id="USER_NAME"
                         autoComplete="name"
                         {...field}
-                        {...form.register('USER_NAME')}
+                        {...form.register("USER_NAME")}
                       />
                     </FormControl>
-                    <FormMessage style={{ fontSize: '12px' }} />
+                    <FormMessage style={{ fontSize: "12px" }} />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="USER_PASSWORD"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Senha</FormLabel>
+                    <FormControl>
+                      <PasswordInput
+                        placeholder="Digite sua senha"
+                        id="USER_PASSWORD"
+                        autoComplete="new-password"
+                        {...field}
+                        {...form.register("USER_PASSWORD")}
+                      />
+                    </FormControl>
+                    <FormMessage style={{ fontSize: "12px" }} />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="USER_PASSWORD_CHECK"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirmar Senha</FormLabel>
+                    <FormControl>
+                      <PasswordInput
+                        placeholder="Digite sua senha"
+                        id="USER_PASSWORD_CHECK"
+                        autoComplete="new-password"
+                        {...field}
+                        {...form.register("USER_PASSWORD_CHECK")}
+                      />
+                    </FormControl>
+                    <FormMessage style={{ fontSize: "12px" }} />
                   </FormItem>
                 )}
               />
               <div>
-                <Button className="w-full mt-4" type="submit">Cadastrar</Button>
+                <Button className="w-full mt-4" type="submit">
+                  Cadastrar
+                </Button>
               </div>
             </form>
           </Form>
@@ -170,5 +234,5 @@ export default function SignupForm() {
         </CardContent>
       </Card>
     </main>
-  )
+  );
 }

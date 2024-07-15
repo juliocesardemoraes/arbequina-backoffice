@@ -1,6 +1,6 @@
 {
-  "name": "projeto---minimarket---backoffice",
-  "version": "0.1.0",
+  "name": "arbequina-backoffice",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

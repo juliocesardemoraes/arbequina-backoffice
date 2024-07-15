@@ -1,11 +1,30 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../ui/button";
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schemaProductPost } from "@/schemas/schemaProductPost";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import useCreate from "@/hooks/useCreate";
 import { useEffect, useState } from "react";
 import { toast } from "../ui/use-toast";
@@ -18,33 +37,42 @@ interface ProductCreateValues {
   PRODUCT_CATEGORY: string;
   PRODUCT_QUANTITY: number;
   PRODUCT_PRICE: number;
+  PRODUCT_ORIGINAL_PRICE: number;
 }
 
 export default function DialogCreateProduct({ categorias }: any) {
   const form = useForm<ProductCreateValues>({
-    mode: 'onBlur',
+    mode: "onBlur",
     resolver: zodResolver(schemaProductPost),
     defaultValues: {
-      PRODUCT_NAME: '',
-      PRODUCT_CATEGORY: '',
+      PRODUCT_NAME: "",
+      PRODUCT_CATEGORY: "",
       PRODUCT_QUANTITY: 0,
-      PRODUCT_PRICE: 0
-    }
+      PRODUCT_PRICE: 0,
+      PRODUCT_ORIGINAL_PRICE: 0,
+    },
   });
 
   const [authToken, setAuthToken] = useState<string | null>(null);
   useEffect(() => {
-    const token = localStorage.getItem('tokenAdmin');
+    const token = localStorage.getItem("tokenAdmin");
     setAuthToken(token);
   }, []);
 
-  const [data, setData] = useState<ProductCreateValues>({} as ProductCreateValues);
+  const [data, setData] = useState<ProductCreateValues>(
+    {} as ProductCreateValues
+  );
   const [posted, setPosted] = useState(false);
-  const { isPosted, isPosting, error, error409 } = useCreate(`${process.env.NEXT_PUBLIC_BASE_URL}/product/create`, data, posted, {
-    headers: {
-      Authorization: `Bearer ${authToken}`
+  const { isPosted, isPosting, error, error409 } = useCreate(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/product/create`,
+    data,
+    posted,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
     }
-  });
+  );
 
   const submitForm: SubmitHandler<ProductCreateValues> = (formData) => {
     setData(formData);
@@ -56,21 +84,21 @@ export default function DialogCreateProduct({ categorias }: any) {
       setPosted(false);
       toast({
         title: error409?.error,
-        description: error409?.message
+        description: error409?.message,
       });
     }
     if (error) {
       setPosted(false);
       toast({
         title: error.error,
-        description: error.message
+        description: error.message,
       });
     }
     if (isPosted) {
       setPosted(false);
       toast({
         title: "Produto cadastrado",
-        description: "O produto foi criado com sucesso."
+        description: "O produto foi criado com sucesso.",
       });
     }
   }, [error, error409, isPosted]);
@@ -81,7 +109,12 @@ export default function DialogCreateProduct({ categorias }: any) {
 
   if (isPosted) {
     return (
-      <DialogContent onCloseAutoFocus={() => { window.location.reload() }} className="w-[28rem] max-w-[90vw]">
+      <DialogContent
+        onCloseAutoFocus={() => {
+          window.location.reload();
+        }}
+        className="w-[28rem] max-w-[90vw]"
+      >
         <DialogHeader>
           <div className="flex justify-center p-4">
             <CircleCheck size={60} color="#15ba12" />
@@ -132,7 +165,9 @@ export default function DialogCreateProduct({ categorias }: any) {
                       {categorias
                         .filter((categoria: any) => !categoria.CATEGORY_DELETED)
                         .map((categoria: any) => (
-                          <SelectItem key={categoria._id} value={categoria._id}>{categoria.CATEGORY_NAME}</SelectItem>
+                          <SelectItem key={categoria._id} value={categoria._id}>
+                            {categoria.CATEGORY_NAME}
+                          </SelectItem>
                         ))}
                     </SelectContent>
                   </Select>
@@ -159,6 +194,29 @@ export default function DialogCreateProduct({ categorias }: any) {
             />
             <FormField
               control={form.control}
+              name="PRODUCT_ORIGINAL_PRICE"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Preço <b>original</b> do produto
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      {...field}
+                      value={formatPrice(field.value)}
+                      onChange={(e) => {
+                        const rawValue = e.target.value.replace(/[^\d]/g, "");
+                        field.onChange(Number(rawValue) / 100);
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-[10px]" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="PRODUCT_PRICE"
               render={({ field }) => (
                 <FormItem>
@@ -169,7 +227,7 @@ export default function DialogCreateProduct({ categorias }: any) {
                       {...field}
                       value={formatPrice(field.value)}
                       onChange={(e) => {
-                        const rawValue = e.target.value.replace(/[^\d]/g, '');
+                        const rawValue = e.target.value.replace(/[^\d]/g, "");
                         field.onChange(Number(rawValue) / 100);
                       }}
                     />
